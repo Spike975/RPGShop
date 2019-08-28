@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace RPGShop
 {
+    //mount and blade quality
     class Program
     {
         static void Main(string[] args)
