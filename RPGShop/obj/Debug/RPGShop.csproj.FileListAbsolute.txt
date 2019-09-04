@@ -1,0 +1,7 @@
+C:\Users\s199026\source\repos\RPGShop\RPGShop\bin\Debug\RPGShop.exe.config
+C:\Users\s199026\source\repos\RPGShop\RPGShop\bin\Debug\RPGShop.exe
+C:\Users\s199026\source\repos\RPGShop\RPGShop\bin\Debug\RPGShop.pdb
+C:\Users\s199026\source\repos\RPGShop\RPGShop\obj\Debug\RPGShop.csprojAssemblyReference.cache
+C:\Users\s199026\source\repos\RPGShop\RPGShop\obj\Debug\RPGShop.csproj.CoreCompileInputs.cache
+C:\Users\s199026\source\repos\RPGShop\RPGShop\obj\Debug\RPGShop.exe
+C:\Users\s199026\source\repos\RPGShop\RPGShop\obj\Debug\RPGShop.pdb

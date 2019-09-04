@@ -55,11 +55,11 @@ namespace RPGShop
             {
                 if (i % 2 == 0)
                 {
-                    WorkSpace.shopkeep[x].item = items[i].ToString();
+                    WorkSpace.shopKeep[x].item = items[i].ToString();
                 }
                 else
                 {
-                    int.TryParse(items[i].ToString(), out WorkSpace.shopkeep[x].value);
+                    int.TryParse(items[i].ToString(), out WorkSpace.shopKeep[x].value);
                     x++;
                 }
             }
