@@ -108,15 +108,29 @@ namespace RPGShop
             }
         }
         /// <summary>
-        /// Allows for the creation of a random weapon
+        /// Allows for the creation of more specified random weapon
         /// </summary>
-        /// <param name="grade">1-8</param>
-        /// <param name="mat">1-7</param>
-        /// <param name="wpn">1-4</param>
+        /// <param name="gradeL">Starting varible, usually 0</param>
+        /// <param name="gradeH">End varible, no higher than 7</param>
+        /// <param name="matL">Starting Varible, usually 0</param>
+        /// <param name="matH">Envarible, no higher than 6</param>
+        /// <param name="wpnL">1-3</param>
+        /// <param name="wpnH">No larger than 3</param>
+        /// <returns></returns>
+        public static string randCreation(int gradeL, int gradeH, int matL, int matH, int wpnL, int wpnH)
+        {
+            return "" + randQuality(rand.Next(gradeL,gradeH))+" "+randMaterial(rand.Next(matL,matH))+" "+randWeapon(rand.Next(wpnL,wpnH));
+        }
+        /// <summary>
+        /// Creates a random weapon
+        /// </summary>
+        /// <param name="grade">1-7</param>
+        /// <param name="mat">1-6</param>
+        /// <param name="wpn">1-3</param>
         /// <returns></returns>
         public static string randCreation(int grade, int mat, int wpn)
         {
-            return "" + randQuality(rand.Next(0,grade))+" "+randMaterial(rand.Next(0,mat))+" "+randWeapon(rand.Next(0,wpn));
+            return "" + randQuality(rand.Next(0, grade)) + " " + randMaterial(rand.Next(0, mat)) + " " + randWeapon(rand.Next(0, wpn));
         }
         /// <summary>
         /// Check the value of the weapon based off the name

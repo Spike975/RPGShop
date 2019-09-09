@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 
 namespace RPGShop
 {
-    //mount and blade quality if time
     struct shopItem {
         public string item;
         public int value;
@@ -43,6 +42,7 @@ namespace RPGShop
         public static TextFile file = new TextFile();//for using the text file class
         public static playerStats plyrStat = new playerStats();// PLAYER STATS!
         public static bool run = true;//For the main code
+        public int baseAttack = 10;
         static void Main()
         {
             bool tutorial = true;//for the tutorial
@@ -51,8 +51,11 @@ namespace RPGShop
             file.readFilePlayer();
             file.readFileSK();
             firstEquip();
+            Enemies enemies = new Enemies();
+            
             plyrStat.gold = 100;//starting gold
-            int items = 0;//checks items
+            int items = 0;
+            //checks items
             while (true) {
                 foreach (playerItem i in player)
                 {
@@ -217,7 +220,22 @@ namespace RPGShop
                 //big boss fights/avdentures to get items/gold!(need to finish) :)
                 else if (input == "forest")
                 {
-                    forestTrial();
+                    Console.WriteLine("Where would you like to go?\n   Shrine");
+                    while (true)
+                    {
+                        input = Console.ReadLine().Trim().ToLower();
+                        if (input == "shrine")
+                        {
+                            Giant g = new Giant();
+                            break;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Please enter again:");
+                        }
+                    }
+                    Giant enemy = new Giant();
+                    Console.ReadLine();
                     checkPrice();
                     shopReset();
                 }
@@ -230,7 +248,9 @@ namespace RPGShop
                         input = Console.ReadLine().ToLower().Trim();
                         if (input == "items")
                         {
+                            sortItems();
                             checkInventory();
+                            checkPrice();
                             break;
                         }else if (input == "stats")
                         {
@@ -311,9 +331,14 @@ namespace RPGShop
             }
         }
         /// <summary>
-        /// WIP Adventure
+        /// Creates a random item based off dificulty
         /// </summary>
-        private static void forestTrial()
+        /// <param name="grd">1-5</param>
+        /// <param name="mat">1-4</param>
+        /// <param name="type">1-8</param>
+        /// <param name="wMat">1-7</param>
+        /// <param name="wpn">1-4</param>
+        private static void rewardItem(int grd, int mat, int type,int wMat,int wpn)
         {
             int _rand = rand.Next(0,2);
             string item_ = "";
@@ -322,24 +347,24 @@ namespace RPGShop
                 int newRand = rand.Next(0,4);
                 if (newRand == 0)
                 {
-                    item_ = Armor.randChest(5,4);
+                    item_ = Armor.randChest(grd,mat);
                 }
                 else if (newRand == 1)
                 {
-                    item_ = Armor.randGaunt(5,4);
+                    item_ = Armor.randGaunt(grd,mat);
                 }
                 else if (newRand == 2)
                 {
-                    item_ = Armor.randHelm(5,4);
+                    item_ = Armor.randHelm(grd,mat);
                 }
                 else if (newRand == 3)
                 {
-                    item_ = Armor.randLeg(5,4);
+                    item_ = Armor.randLeg(grd,mat);
                 }
             }
             else if (_rand == 1)
             {
-                item_ = Weapons.randCreation(8,7,4);
+                item_ = Weapons.randCreation(type,wMat,wpn);
             }
             for (int i = 0; i <50; i ++)
             {
@@ -994,7 +1019,6 @@ namespace RPGShop
                 if (player[i].item!= null && player[i].value == 0)
                 {
                     player[i].value = Weapons.checkValue(player[i].item);
-                    player[i].value = Weapons.checkValue(player[i].item);
                 }
             }
         }
@@ -1009,6 +1033,8 @@ namespace RPGShop
             defense += Armor.checkDefense(plyrStat.equipeGaunt);
             defense += Armor.checkDefense(plyrStat.equipeChest);
             attack += Weapons.checkAttack(plyrStat.equipedWeapon);
+            plyrStat.attack = attack;
+            plyrStat.defence = defense;
             Console.WriteLine($"You\'re total defense is {defense}\nYou\'re Attack is {attack}");
         }
         /// <summary>
