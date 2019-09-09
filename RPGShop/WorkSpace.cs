@@ -34,25 +34,25 @@ namespace RPGShop
         /// <summary>
         /// Holds all of the item data and the items value for the Shop Keep
         /// </summary>
-        public static shopItem[] shopKeep = new shopItem[6];
+        public static shopItem[] shopKeep = new shopItem[5];
         /// <summary>
         /// Holds all of the item data and the items value for the Player
         /// </summary>
         public static playerItem[] player = new playerItem[50];
-        public static Random rand = new Random();
-        public static TextFile file = new TextFile();
-        public static playerStats plyrStat = new playerStats();
-        public static bool run = true;
+        public static Random rand = new Random();//for random numbers
+        public static TextFile file = new TextFile();//for using the text file class
+        public static playerStats plyrStat = new playerStats();// PLAYER STATS!
+        public static bool run = true;//For the main code
         static void Main()
         {
-            bool tutorial = true;
-            bool done = false;
-            string input;
+            bool tutorial = true;//for the tutorial
+            bool done = false;//kinda not needed, but only used once
+            string input;//player input string
             file.readFilePlayer();
             file.readFileSK();
             firstEquip();
-            plyrStat.gold = 100;
-            int items = 0;
+            plyrStat.gold = 100;//starting gold
+            int items = 0;//checks items
             while (true) {
                 foreach (playerItem i in player)
                 {
@@ -73,6 +73,7 @@ namespace RPGShop
             plyrStat.name = Console.ReadLine();
             Console.WriteLine($"Welcome {plyrStat.name}! Today, your adventure begins!\n");
             Console.WriteLine("Would you like to start off with a sword or an axe?");
+            //Does what it says up above, based off the anwser  ^
             while (true)
             {
                 input = Console.ReadLine().ToLower();
@@ -112,6 +113,7 @@ namespace RPGShop
             }
             plyrStat.health = 100;
             Console.WriteLine("\nYou arrive in town. You notice an inn, an equipment shop, what appears to be a witches hut,\n    or you can travel into the forest beyond.");
+            //main piece of code:
             while (run)
             {
                 if (!tutorial && !done)
@@ -129,10 +131,12 @@ namespace RPGShop
                 }
                 Console.WriteLine("Where would you like to go?");
                 input = Console.ReadLine().ToLower().Trim();
+                //idk what to do with this
                 if (input == "inn")
                 {
                     Console.WriteLine("PUB!(WIP)");
                 }
+                //hopefully done. to much stuff here
                 else if (input == "shop")
                 {
                     Console.WriteLine("You enter the shop.\n");
@@ -205,16 +209,19 @@ namespace RPGShop
                         }
                     }
                 }
+                //POTIONS! For Boss Fights!... i think...
                 else if (input == "hut" || input == "witch")
                 {
                     Console.WriteLine("Um, spells?(WIP)");
                 }
+                //big boss fights/avdentures to get items/gold!(need to finish) :)
                 else if (input == "forest")
                 {
                     forestTrial();
                     checkPrice();
                     shopReset();
                 }
+                //i think i'm done
                 else if(input == "inventory" || input == "equipment")
                 {
                     Console.WriteLine("You can check your items, check stats, or equip items.\n\nWhat would you like to do?");
@@ -245,27 +252,30 @@ namespace RPGShop
                     Console.WriteLine("Still more things to do!");
 
                 }
+                //done. pretty easy
                 else if(input == "gold"||input == "bal"||input == "balance")
                 {
                     Console.WriteLine($"You have {plyrStat.gold} gold!\nDon't go spend it all in one place.");
                 }
+                //done... unless i add more
                 else if (input == "help")
                 {
                     Console.WriteLine("You can type \'inn\' to go to the inn.\nYou can type \'shop\' to visit the equipment shop.");
                     Console.WriteLine("You can type \'witch\' or \'hut\' to go to the witches hut.\nYou can type \'forest\' to delve into the forest.");
                     if (!tutorial) Console.WriteLine("You can type \'inventory\' or \'equipment\' to look at your inventory.\nYou can type \'bal\',\'balance\', or \'gold\' to view you total gold!");
                 }
+                //it kills you, it's pretty simple....
                 else if (input == "kill")
                 {
                     death();
                     run = false;
                 }
+                //um... redo?
                 else
                 {
                     Console.WriteLine("I didn't quite understand that. Please recheck your spelling, or type an actual place.");
                     Console.WriteLine("You can also type \'help\' for assistance in where to go!");
                 }
-
             }
             file.writeFilePlayer();
         }
