@@ -9,7 +9,7 @@ namespace RPGShop
     //mount and blade quality if time
     struct shopItem {
         public string item;
-        public int value;//for buying, have it +25 more than the original price
+        public int value;
     }
     struct playerItem {
         public string item;
@@ -46,14 +46,32 @@ namespace RPGShop
         static void Main()
         {
             bool tutorial = true;
+            bool done = false;
             string input;
             file.readFilePlayer();
             file.readFileSK();
             firstEquip();
             plyrStat.gold = 100;
-            Console.WriteLine("Welcome to a short RPG adventure game.\nPlease enter you name adventurer:");
+            int items = 0;
+            while (true) {
+                foreach (playerItem i in player)
+                {
+                    if (i.item != null)
+                    {
+                        items++;
+                    }
+                }
+                break;
+            }
+            if (items < 5) {
+                Console.WriteLine("Welcome to a short RPG adventure game.\n\nPlease enter you name adventurer:");
+            }
+            else
+            {
+                Console.WriteLine("Welcome back adventurer.\nPlease renter your name:");
+            }
             plyrStat.name = Console.ReadLine();
-            Console.WriteLine($"Welcome {plyrStat.name}! Today, your adventure begins!");
+            Console.WriteLine($"Welcome {plyrStat.name}! Today, your adventure begins!\n");
             Console.WriteLine("Would you like to start off with a sword or an axe?");
             while (true)
             {
@@ -93,21 +111,23 @@ namespace RPGShop
                 }
             }
             plyrStat.health = 100;
-            Console.WriteLine("You arrive in town. You notice an inn, an equipment shop, what appears to be a witches hut,\nor travel into the forest beyond.");
+            Console.WriteLine("\nYou arrive in town. You notice an inn, an equipment shop, what appears to be a witches hut,\n    or you can travel into the forest beyond.");
             while (run)
             {
-                bool done = false;
-                bool shopDone = false;
                 if (!tutorial && !done)
                 {
-                    Console.WriteLine("You arrive back in town. You can now check your \'inventory\' and your \'gold\'!");
+                    Console.WriteLine("\nYou arrive back in town.\nYou can now check your \'inventory\' and your \'gold\'!\n");
                     done = true;
                 }
                 else if(tutorial)
                 {
-                    Console.WriteLine("You should probably visit the equipment shop first!");
+                    Console.WriteLine("You should probably visit the equipment shop first!\n");
                 }
-                Console.WriteLine("Where would you like to do?");
+                else
+                {
+                    Console.WriteLine("\nYou arive back in town.");
+                }
+                Console.WriteLine("Where would you like to go?");
                 input = Console.ReadLine().ToLower().Trim();
                 if (input == "inn")
                 {
@@ -115,22 +135,25 @@ namespace RPGShop
                 }
                 else if (input == "shop")
                 {
-                    Console.WriteLine("You enter the shop.");
-                    if (tutorial && !shopDone)
+                    Console.WriteLine("You enter the shop.\n");
+                    if (tutorial)
                     {
                         Console.WriteLine("Welcome to my shop! Here, you can buy and sell equipment.");
                         Console.WriteLine("Would you like a more in depth look at how you would do this?.");
                         input = Console.ReadLine().ToLower().Trim();
                         if (input == "yes")
                         {
-                            Console.WriteLine("Alright! Like I said previously, you can buy and sell equipment here.\nAfter you\'ve specified what you want to do,");
-                            shopHelp("You can type");
+                            Console.WriteLine("Alright! Like I said previously, you can buy and sell equipment here.\n  You can type \'buy\' or \'sell\' to accomplish this.\n");
+                            shopHelp("sell");
+                            Console.WriteLine();
+                            shopHelp("buy");
+                            Console.WriteLine("\nThe same works for equiping items as well.");
                         }
                         else
                         {
                             Console.WriteLine("Oh well, I guess you already know how to use shops.\nNo big deal I suppose.");
                         }
-                        Console.WriteLine("So, can i do anything for ya?");
+                        Console.WriteLine("\nSo, can I do anything for ya?");
                         while (true)
                         {
                             input = Console.ReadLine();
@@ -194,7 +217,31 @@ namespace RPGShop
                 }
                 else if(input == "inventory" || input == "equipment")
                 {
-                    checkInventory();
+                    Console.WriteLine("You can check your items, check stats, or equip items.\n\nWhat would you like to do?");
+                    while (true)
+                    {
+                        input = Console.ReadLine().ToLower().Trim();
+                        if (input == "items")
+                        {
+                            checkInventory();
+                            break;
+                        }else if (input == "stats")
+                        {
+                            checkEquip();
+                            break;
+                        }else if (input == "equip")
+                        {
+                            equipItems();
+                            break;
+                        }else if (input == "help")
+                        {
+                            Console.WriteLine("\n   You can type \'items\' to view your items, \'stats\' to veiw stats,\n   and \'equip\' to equip items.");
+                        }
+                        else
+                        {
+                            Console.WriteLine("\nYou can type \'help\' for help.\n\nPlease enter again:");
+                        }
+                    }
                     Console.WriteLine("Still more things to do!");
 
                 }
@@ -220,9 +267,10 @@ namespace RPGShop
                 }
 
             }
+            file.writeFilePlayer();
         }
         /// <summary>
-        /// Resets the shop after you 
+        /// Resets the shop after you finish the forest 
         /// </summary>
         private static void shopReset()
         {
@@ -299,7 +347,7 @@ namespace RPGShop
         private static void sellShop()
         {
             string input;
-            string thisName;
+            string thisName = "";
             bool finish = false;
             Console.WriteLine("So, what would ya like to sell?");
             string[] items = new string[50];
@@ -308,9 +356,9 @@ namespace RPGShop
             int x = 0;
             while (true) {
                 input = Console.ReadLine().ToLower().Trim();
-                thisName = input;
                 if (input == "helmet" || input == "helm")
                 {
+                    thisName = input;
                     foreach (playerItem i in player)
                     {
                         if (i.item != null)
@@ -335,6 +383,7 @@ namespace RPGShop
                 }
                 else if (input == "chestpiece" || input == "chest")
                 {
+                    thisName = input;
                     foreach (playerItem i in player)
                     {
                         if (i.item != null)
@@ -359,6 +408,7 @@ namespace RPGShop
                 }
                 else if (input == "gauntlet" || input == "gaunt")
                 {
+                    thisName = input;
                     foreach (playerItem i in player)
                     {
                         if (i.item != null)
@@ -383,6 +433,7 @@ namespace RPGShop
                 }
                 else if (input == "leggings" || input == "leg")
                 {
+                    thisName = input;
                     foreach (playerItem i in player)
                     {
                         string[] _item = i.item.Split(' ');
@@ -404,6 +455,7 @@ namespace RPGShop
                 }
                 else if (input == "weapons" || input == "weapon")
                 {
+                    thisName = input;
                     Console.WriteLine("Is there a certian weapon that you would like to sell?(Y/N)");
                     input = Console.ReadLine().ToString().Trim();
                     thisName = input;
@@ -415,6 +467,7 @@ namespace RPGShop
                             thisName = input;
                             if (input == "axe")
                             {
+                                thisName = input;
                                 foreach (playerItem i in player)
                                 {
                                     if (i.item != null)
@@ -439,6 +492,7 @@ namespace RPGShop
                             }
                             else if(input == "sword")
                             {
+                                thisName = input;
                                 foreach (playerItem i in player)
                                 {
                                     if (i.item != null) {
@@ -462,6 +516,7 @@ namespace RPGShop
                             }
                             else if (input == "mace")
                             {
+                                thisName = input;
                                 foreach (playerItem i in player)
                                 {
                                     if (i.item != null)
@@ -486,6 +541,7 @@ namespace RPGShop
                             }
                             else if (input == "pike")
                             {
+                                thisName = input;
                                 foreach (playerItem i in player)
                                 {
                                     if (i.item != null)
@@ -542,7 +598,7 @@ namespace RPGShop
                 }
                 else if (input == "help")
                 {
-                    shopHelp("Type");
+                    shopHelp("sell");
                 }
                 else if (input == "n"||input =="no"||input == "stop")
                 {
@@ -707,10 +763,21 @@ namespace RPGShop
         /// <summary>
         /// An easy way to provaide assistace with the shop
         /// </summary>
-        /// <param name="words">The first thing that is said</param>
+        /// <param name="words">"Buy" or "Sell"</param>
         private static void shopHelp(string words)
         {
-            Console.WriteLine($"{words} \'helmet\' or\'helm\' to sell helmets.\n{words} \'chestpiece\' or\'chest\' to sell chestpieces.\n{words} \'gauntlet\' or\'gaunt\' to sell gauntlets.\n{words} \'leggings\' or\'leg\' to sell gauntlets.\n{words} \'weapon\' or\'weapons\' to sell weapons.");
+
+            if (words == "sell")
+            {
+                Console.WriteLine("To sell, you type in \'helmet\', \'chestpiece\', \'gauntlets\', \'leggings\', or \'weapon\' for the specified item type.\n   If you want to sell a specific type of weapon, you can do so shortly after you type \'weapon\'.");
+            }else if (words == "buy")
+            {
+                Console.WriteLine("To buy, you type in \'helmet\', \'chestpiece\', \'gauntlets\', \'leggings\', or \'weapon\' for the specified item type\n that the shopkeep is selling.");
+            }
+            else
+            {
+                Console.WriteLine("You messed up. FIX IT!!!!!!!!!!!!");
+            }
         }
         /// <summary>
         /// Allows the player to buy items for the shopkeep
@@ -726,7 +793,7 @@ namespace RPGShop
             foreach (shopItem i in shopKeep)
             {
                 if (i.item != null) {
-                    Console.WriteLine($"{i.item} for {i.value} gold.");
+                    Console.WriteLine($"   {i.item} for {i.value} gold.");
                     items[x] = i.item;
                     val[x] = i.value;
                 }
@@ -737,119 +804,158 @@ namespace RPGShop
             {
                 input = Console.ReadLine().ToLower().Trim();
                 if (input == "stop") { break; }
-                if (input == "helmet" && items[0] != null && plyrStat.gold >= val[0])
+                if (input == "helmet" && items[0] != null)
                 {
-                    Console.WriteLine($"So, the {items[0]} strikes you're fancy, eh? So be it!");
-                    for (int i = 0; i < 50; i++)
+                    if (plyrStat.gold <= val[0]) { Console.WriteLine("\nYou don't seem like you have enough money. Come back later and try again."); }
+                    else if (shopKeep[0].item == null) { Console.WriteLine("That has already been sold."); }
+                    else
                     {
-                        if (player[i].item == null)
+                        Console.WriteLine($"So, the {items[0]} strikes you're fancy, eh? So be it!");
+                        for (int i = 0; i < 50; i++)
                         {
-                            player[i].item = items[0];
-                            plyrStat.gold -= player[i].value;
-                            player[i].value = (val[0]-25) <= 0? 0:val[0]-25;
-                            break;
-                        }
-                        else
-                        {
-                            if (i == 49)
+                            if (player[i].item == null)
                             {
-                                Console.WriteLine("It looks like you are full on inventory space, you should probably sell some items.");
+                                player[i].item = items[0];
+                                plyrStat.gold -= shopKeep[0].value;
+                                player[i].value = (val[0] - 25) <= 0 ? 0 : val[0] - 25;
+                                shopKeep[0].item = null;
+                                shopKeep[0].value = 0;
+                                break;
+                            }
+                            else
+                            {
+                                if (i == 49)
+                                {
+                                    Console.WriteLine("It looks like you are full on inventory space, you should probably sell some items.");
+                                }
                             }
                         }
                     }
                     break;
                 }
-                else if (input == "chestpiece" && items[1] != null && plyrStat.gold >= val[1])
+                else if (input == "chestpiece" && items[1] != null)
                 {
-                    Console.WriteLine($"So, the {items[1]} strikes you're fancy, eh? So be it!");
-                    for (int i = 0; i < 50; i++)
+                    if (plyrStat.gold <= val[1]) { Console.WriteLine("\nYou don't seem like you have enough money. Come back later and try again.");}
+                    else if (shopKeep[0].item == null) { Console.WriteLine("That has already been sold."); }
+                    else
                     {
-                        if (player[i].item == null)
+                        Console.WriteLine($"So, the {items[1]} strikes you're fancy, eh? So be it!");
+                        for (int i = 0; i < 50; i++)
                         {
-                            player[i].item = items[1];
-                            plyrStat.gold -= player[i].value;
-                            player[i].value = (val[1] - 25) <= 0 ? 0 : val[1] - 25;
-                            break;
-                        }
-                        else
-                        {
-                            if (i == 49)
+                            if (player[i].item == null)
                             {
-                                Console.WriteLine("It looks like you are full on inventory space, you should probably sell some items.");
+                                player[i].item = items[1];
+                                plyrStat.gold -= shopKeep[1].value;
+                                player[i].value = (val[1] - 25) <= 0 ? 0 : val[1] - 25;
+                                shopKeep[1].item = null;
+                                shopKeep[1].value = 0;
+                                break;
+                            }
+                            else
+                            {
+                                if (i == 49)
+                                {
+                                    Console.WriteLine("It looks like you are full on inventory space, you should probably sell some items.");
+                                }
+                            }
+                        }
+                    }
+                        break;
+                }
+                else if (input == "gauntlets" && items[2] != null)
+                {
+                    if (plyrStat.gold <= val[2]) { Console.WriteLine("\nYou don't seem like you have enough money. Come back later and try again."); break; }
+                    else if (shopKeep[0].item == null) { Console.WriteLine("That has already been sold."); }
+                    else
+                    {
+                        Console.WriteLine($"So, the {items[2]} strikes you're fancy, eh? So be it!");
+                        for (int i = 0; i < 50; i++)
+                        {
+                            if (player[i].item == null)
+                            {
+                                player[i].item = items[2];
+                                plyrStat.gold -= shopKeep[2].value;
+                                player[i].value = (val[2] - 25) <= 0 ? 0 : val[2] - 25;
+                                shopKeep[2].item = null;
+                                shopKeep[2].value = 0;
+                                break;
+                            }
+                            else
+                            {
+                                if (i == 49)
+                                {
+                                    Console.WriteLine("It looks like you are full on inventory space, you should probably sell some items.");
+                                }
+                            }
+                        }
+                        break;
+                    }
+                }
+                else if (input == "leggings" && items[3] != null)
+                {
+                    if (plyrStat.gold <= val[3]) { Console.WriteLine("\nYou don't seem like you have enough money. Come back later and try again."); }
+                    else if (shopKeep[0].item == null) { Console.WriteLine("That has already been sold."); }
+                    else
+                    {
+                        Console.WriteLine($"So, the {items[3]} strikes you're fancy, eh? So be it!");
+                        for (int i = 0; i < 50; i++)
+                        {
+                            if (player[i].item == null)
+                            {
+                                player[i].item = items[3];
+                                plyrStat.gold -= shopKeep[3].value;
+                                player[i].value = (val[3] - 25) <= 0 ? 0 : val[3] - 25;
+                                shopKeep[3].item = null;
+                                shopKeep[3].value = 0;
+                                break;
+                            }
+                            else
+                            {
+                                if (i == 49)
+                                {
+                                    Console.WriteLine("It looks like you are full on inventory space, you should probably sell some items.");
+                                }
                             }
                         }
                     }
                     break;
                 }
-                else if (input == "gauntlets" && items[2] != null && plyrStat.gold >= val[2])
+                else if (input == "weapon" && items[4] != null)
                 {
-                    Console.WriteLine($"So, the {items[2]} strikes you're fancy, eh? So be it!");
-                    for (int i = 0; i < 50; i++)
+                    if (plyrStat.gold <= val[4]) { Console.WriteLine("\nYou don't seem like you have enough money. Come back later and try again."); }
+                    else if (shopKeep[0].item == null) { Console.WriteLine("That has already been sold."); }
+                    else
                     {
-                        if (player[i].item == null)
+                        Console.WriteLine($"So, you enjoy the gleam of the {items[4]}, do ya? So be it!");
+                        for (int i = 0; i < 50; i++)
                         {
-                            player[i].item = items[2];
-                            plyrStat.gold -= player[i].value;
-                            player[i].value = (val[2] - 25) <= 0 ? 0 : val[2] - 25;
-                            break;
-                        }
-                        else
-                        {
-                            if (i == 49)
+                            if (player[i].item == null)
                             {
-                                Console.WriteLine("It looks like you are full on inventory space, you should probably sell some items.");
+                                player[i].item = items[4];
+                                plyrStat.gold -= shopKeep[4].value;
+                                player[i].value = (val[4] - 25) <= 0 ? 0 : val[4] - 25;
+                                shopKeep[4].item = null;
+                                shopKeep[4].value = 0;
+                                break;
+                            }
+                            else
+                            {
+                                if (i == 49)
+                                {
+                                    Console.WriteLine("It looks like you are full on inventory space, you should probably sell some items.");
+                                }
                             }
                         }
                     }
                     break;
                 }
-                else if (input == "leggings" && items[3] != null && plyrStat.gold >= val[3])
+                else if (input == "help")
                 {
-                    Console.WriteLine($"So, the {items[3]} strikes you're fancy, eh? So be it!");
-                    for (int i = 0; i < 50; i++)
-                    {
-                        if (player[i].item == null)
-                        {
-                            player[i].item = items[3];
-                            plyrStat.gold -= player[i].value;
-                            player[i].value = (val[3] - 25) <= 0 ? 0 : val[3] - 25;
-                            break;
-                        }
-                        else
-                        {
-                            if (i == 49)
-                            {
-                                Console.WriteLine("It looks like you are full on inventory space, you should probably sell some items.");
-                            }
-                        }
-                    }
-                    break;
-                }
-                else if (input == "weapon" && items[4] != null && plyrStat.gold >= val[4])
-                {
-                    Console.WriteLine($"So, you enjoy the gleam of the {items[4]}, do ya? So be it!");
-                    for (int i = 0; i < 50; i++)
-                    {
-                        if (player[i].item == null)
-                        {
-                            player[i].item = items[4];
-                            plyrStat.gold -= player[i].value;
-                            player[i].value = (val[4] - 25) <= 0 ? 0 : val[4] - 25;
-                            break;
-                        }
-                        else
-                        {
-                            if (i == 49)
-                            {
-                                Console.WriteLine("It looks like you are full on inventory space, you should probably sell some items.");
-                            }
-                        }
-                    }
-                    break;
+                    shopHelp("buy");
                 }
                 else
                 {
-                    Console.WriteLine("I didn't quite get that, can you enter again?");
+                    Console.WriteLine("I didn't quite get that, can you enter again?\nYou can type help if needed.");
                 }
             }
             Console.WriteLine("Thanks for doing buisness!");
@@ -861,7 +967,7 @@ namespace RPGShop
         {
             for (int i = 0; i < 50; i++)
             {
-                if (player[i].item == null && (player[i+1].item != null && i <49))
+                if (player[i].item == null && i < 49)
                 {
                     player[i].item = player[i + 1].item;
                     player[i].value = player[i + 1].value;
@@ -896,12 +1002,230 @@ namespace RPGShop
             Console.WriteLine($"You\'re total defense is {defense}\nYou\'re Attack is {attack}");
         }
         /// <summary>
+        /// Allows the player to equip items
+        /// </summary>
+        private static void equipItems()
+        {
+            string input = "";
+            string ites = "";
+            string[] _items = new string[50];
+            int place = 0;
+            Console.WriteLine($"You currently have equiped:\n   {plyrStat.equipedHelm}\n   {plyrStat.equipeChest}\n   {plyrStat.equipeGaunt}\n   {plyrStat.equipeLeg}\n   {plyrStat.equipedWeapon}");
+            Console.WriteLine("\nWhich type of item would you like to equip?");
+            while (true)
+            {
+                input = Console.ReadLine().Trim().ToLower();
+                if (input == "helmet"||input == "helm")
+                {
+                    ites = input;
+                    for(int i = 0; i < player.Length;i++)
+                    {
+                        if (player[i].item != null)
+                        {
+                            string[] item = player[i].item.Split(' ');
+                            if (item[2] == "Helmet")
+                            {
+                                _items[place] = player[i].item;
+                                place++;
+                            }
+                        }
+                    }
+                    break;
+                }
+                else if (input == "chestpiece" || input == "chest")
+                {
+                    ites = input;
+                    for (int i = 0; i < player.Length; i++)
+                    {
+                        if (player[i].item != null)
+                        {
+                            string[] item = player[i].item.Split(' ');
+                            if (item[2] == "Chestpiece")
+                            {
+                                _items[place] = player[i].item;
+                                place++;
+                            }
+                        }
+                    }
+                    break;
+                }
+                else if (input == "gauntlets" || input == "gaunt")
+                {
+                    ites = input;
+                    for (int i = 0; i < player.Length; i++)
+                    {
+                        if (player[i].item != null)
+                        {
+                            string[] item = player[i].item.Split(' ');
+                            if (item[2] == "Gauntlets")
+                            {
+                                _items[place] = player[i].item;
+                                place++;
+                            }
+                        }
+                    }
+                    break;
+                }
+                else if (input == "leggings" || input == "legs")
+                {
+
+                    ites = input;
+                    for (int i = 0; i < player.Length; i++)
+                    {
+                        if (player[i].item != null)
+                        {
+                            string[] item = player[i].item.Split(' ');
+                            if (item[2] == "Leggings")
+                            {
+                                _items[place] = player[i].item;
+                                place++;
+                            }
+                        }
+                    }
+                    break;
+                }
+                else if (input == "weapon" || input == "weapons")
+                {
+                    ites = input;
+                    for (int i = 0; i < player.Length; i++)
+                    {
+                        if (player[i].item != null)
+                        {
+                            string[] item = player[i].item.Split(' ');
+                            if (item[2] == "Axe" || item[2] == "Sword" || item[2] == "Mace" || item[2] == "Pike")
+                            {
+                                _items[place] = player[i].item;
+                                place++;
+                            }
+                        }
+                    }
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Please enter again:");
+                }
+            }
+            Console.WriteLine("You can equip:\n");
+            foreach (string i in _items)
+            {
+                if (i != null) {
+                    Console.WriteLine("   " + i);
+                }
+            }
+            Console.WriteLine($"\nWhich {ites} would you like to equip?");
+            while (true)
+            {
+                input = Console.ReadLine().Trim().ToLower();
+                if (ites == "helmet"|| ites == "helm") {
+                    for (int i = 0; i < _items.Length; i++)
+                    {
+                        if (_items[i] != null)
+                        {
+                            if (input == _items[i].ToLower())
+                            {
+                                plyrStat.equipedHelm = _items[i];
+                                Console.WriteLine($"\nYou have equiped {_items[i]}!\n");
+                                break;
+                            }
+                            else if (i == 49)
+                            {
+                                Console.WriteLine("Please enter again:");
+                            }
+                        }
+                    }
+                    break;
+                }
+                else if (ites == "chestpiece" || ites == "chest")
+                {
+                    for (int i = 0; i < _items.Length; i++)
+                    {
+                        if (_items[i] != null)
+                        {
+                            if (input == _items[i].ToLower())
+                            {
+                                plyrStat.equipeChest = _items[i];
+                                Console.WriteLine($"\nYou have equiped {_items[i]}!\n");
+                                break;
+                            }
+                            else if (i == 49)
+                            {
+                                Console.WriteLine("Please enter again:");
+                            }
+                        }
+                    }
+                    break;
+                }
+                else if (ites == "gauntlets" || ites == "gaunt")
+                {
+                    for (int i = 0; i < _items.Length; i++)
+                    {
+                        if (_items[i] != null)
+                        {
+                            if (input == _items[i].ToLower())
+                            {
+                                plyrStat.equipeGaunt = _items[i];
+                                Console.WriteLine($"\nYou have equiped {_items[i]}!\n");
+                                break;
+                            }
+                            else if (i == 49)
+                            {
+                                Console.WriteLine("Please enter again:");
+                            }
+                        }
+                    }
+                    break;
+                }
+                else if (ites == "leggings" || ites == "legs")
+                {
+                    for (int i = 0; i < _items.Length; i++)
+                    {
+                        if (_items[i] != null)
+                        {
+                            if (input == _items[i].ToLower())
+                            {
+                                plyrStat.equipeLeg = _items[i];
+                                Console.WriteLine($"\nYou have equiped {_items[i]}!\n");
+                                break;
+                            }
+                            else if (i == 49)
+                            {
+                                Console.WriteLine("Please enter again:");
+                            }
+                        }
+                    }
+                    break;
+                }
+                else if (ites == "weapon" || ites == "weapons")
+                {
+                    for (int i = 0; i < _items.Length; i++)
+                    {
+                        if (_items[i] != null)
+                        {
+                            if (input == _items[i].ToLower())
+                            {
+                                plyrStat.equipedWeapon = _items[i];
+                                Console.WriteLine($"\nYou have equiped {_items[i]}!\n");
+                                break;
+                            }
+                            else if (i == 49)
+                            {
+                                Console.WriteLine("Please enter again:");
+                            }
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+        /// <summary>
         /// Kills the player and sets them back up with the begining armor.
         /// </summary>
         private static void death()
         {
             Console.WriteLine("It looks like you have died, better luck next time!");
             file.reset();
+            file.readFilePlayer();
             Console.ReadLine();
         }
         /// <summary>
