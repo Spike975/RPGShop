@@ -86,6 +86,18 @@ namespace RPGShop
             return "" +armorGrade(rand.Next(0,grd))+" " + armorMaterial(rand.Next(0,mat)) +" Helmet";
         }
         /// <summary>
+        /// Creastes a more specified helmet
+        /// </summary>
+        /// <param name="grdL">Lowest Value, usually 0</param>
+        /// <param name="grdH">No higher than 5</param>
+        /// <param name="matL">Lowest value, Usually 0</param>
+        /// <param name="matH">No higher than 4</param>
+        /// <returns></returns>
+        public static string randHelm(int grdL, int grdH, int matL, int matH)
+        {
+            return "" + armorGrade(rand.Next(grdL, grdH)) + " " + armorMaterial(rand.Next(matL, matH)) + " Helmet";
+        }
+        /// <summary>
         /// Creates a random Chestpiece with random materials and quality
         /// </summary>
         /// <param name="grd">Between 0-5</param>
@@ -94,6 +106,18 @@ namespace RPGShop
         public static string randChest(int grd, int mat)
         {
             return "" + armorGrade(rand.Next(0, grd)) + " " + armorMaterial(rand.Next(0, mat)) + " Chestpiece";
+        }
+        /// <summary>
+        /// Creastes a more specified chestpiece
+        /// </summary>
+        /// <param name="grdL">Lowest Value, usually 0</param>
+        /// <param name="grdH">No higher than 5</param>
+        /// <param name="matL">Lowest value, Usually 0</param>
+        /// <param name="matH">No higher than 4</param>
+        /// <returns></returns>
+        public static string randChest(int grdL, int grdH, int matL, int matH)
+        {
+            return "" + armorGrade(rand.Next(grdL, grdH)) + " " + armorMaterial(rand.Next(matL, matH)) + " Chestpiece";
         }
         /// <summary>
         /// Creates a random pair of Gauntlets with random materials and quality
@@ -106,6 +130,18 @@ namespace RPGShop
             return "" + armorGrade(rand.Next(0, grd)) + " " + armorMaterial(rand.Next(0, mat)) + " Gauntlets";
         }
         /// <summary>
+        /// Creastes a more specified pair of gauntlets
+        /// </summary>
+        /// <param name="grdL">Lowest Value, usually 0</param>
+        /// <param name="grdH">No higher than 5</param>
+        /// <param name="matL">Lowest value, Usually 0</param>
+        /// <param name="matH">No higher than 4</param>
+        /// <returns></returns>
+        public static string randGaunt(int grdL, int grdH, int matL, int matH)
+        {
+            return "" + armorGrade(rand.Next(grdL, grdH)) + " " + armorMaterial(rand.Next(matL, matH)) + " Gauntlets";
+        }
+        /// <summary>
         /// Creates a random pair of Leggings with random materials and quality
         /// </summary>
         /// <param name="grd">Between 0-5</param>
@@ -114,6 +150,18 @@ namespace RPGShop
         public static string randLeg(int grd, int mat)
         {
             return "" + armorGrade(rand.Next(0, grd)) + " " + armorMaterial(rand.Next(0, mat)) + " Leggings";
+        }
+        /// <summary>
+        /// Creastes a more specified pair of leggings
+        /// </summary>
+        /// <param name="grdL">Lowest Value, usually 0</param>
+        /// <param name="grdH">No higher than 5</param>
+        /// <param name="matL">Lowest value, Usually 0</param>
+        /// <param name="matH">No higher than 4</param>
+        /// <returns></returns>
+        public static string randLeg(int grdL, int grdH, int matL, int matH)
+        {
+            return "" + armorGrade(rand.Next(grdL, grdH)) + " " + armorMaterial(rand.Next(matL, matH)) + " Leggings";
         }
         /// <summary>
         /// Totals up the value of a piece of armor and returns the amount in 

@@ -108,7 +108,7 @@ namespace RPGShop
             }
         }
         /// <summary>
-        /// Allows for the creation of more specified random weapon
+        /// Allows for the creation of more specified weapon
         /// </summary>
         /// <param name="gradeL">Starting varible, usually 0</param>
         /// <param name="gradeH">End varible, no higher than 7</param>

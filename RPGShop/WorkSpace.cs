@@ -44,15 +44,13 @@ namespace RPGShop
         public static bool run = true;//For the main code
         public int baseAttack = 10;
         static void Main()
-        {
+        { 
             bool tutorial = true;//for the tutorial
             bool done = false;//kinda not needed, but only used once
             string input;//player input string
             file.readFilePlayer();
             file.readFileSK();
             firstEquip();
-            Enemies enemies = new Enemies();
-            
             plyrStat.gold = 100;//starting gold
             int items = 0;
             //checks items
