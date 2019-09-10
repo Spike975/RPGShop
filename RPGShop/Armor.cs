@@ -188,7 +188,7 @@ namespace RPGShop
             return val;
         }
         /// <summary>
-        /// Checks the value of the equiped armor
+        /// Checks the value of the given piece of armor
         /// </summary>
         /// <param name="item">Enter the string of the item you want to check</param>
         /// <returns>Defense value in a float</returns>

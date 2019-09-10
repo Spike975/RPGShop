@@ -185,7 +185,7 @@ namespace RPGShop
             if (_item[2] == "Sword") { val += 1f; }
             else if (_item[2] == "Axe") { val += 1f; }
             else if (_item[2] == "Pike") { val += 1.25f; }
-            else if (_item[2] == "Hammer") { val += 1.5f; }
+            else if (_item[2] == "Mace") { val += 1.5f; }
             return val;
         }
     }

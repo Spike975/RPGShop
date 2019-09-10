@@ -11,14 +11,16 @@ namespace RPGShop
             StreamReader reader = new StreamReader("player.txt");
             string[] items = reader.ReadLine().Split(',');
             int x = 0;
-            for (int i = 0; i < items.Length; i++) {
-                if (i%2 == 0) {
-                    WorkSpace.player[x].item = items[i].ToString();
-                }
-                else
+            for (int i = 0; i < WorkSpace.player.Length; i++) {
+                if (i >=4)
                 {
-                    int.TryParse( items[i].ToString(), out WorkSpace.player[x].value);
-                    x++;
+                    WorkSpace.player[i].item = null;
+                    WorkSpace.player[i].value = 0;
+                }
+                else{
+                    WorkSpace.player[i].item = items[x].ToString();
+                    int.TryParse( items[x+1].ToString(), out WorkSpace.player[i].value);
+                    x+=2;
                 }
             }
             reader.Close();
@@ -28,7 +30,7 @@ namespace RPGShop
             StreamWriter writer = new StreamWriter("player.txt");
             int calc = 0;
             foreach(playerItem i in WorkSpace.player){
-                if (i.value != 0 && i.item != null)
+                if (i.item != null)
                 {
                     writer.Write(i.item + ","+i.value);
                     calc++;
