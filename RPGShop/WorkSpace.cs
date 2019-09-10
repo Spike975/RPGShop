@@ -12,7 +12,7 @@ namespace RPGShop
     }
     struct playerStats
     {
-        public int health;
+        public float health;
         public int gold;
         public float speed;
         public float defence;
@@ -231,11 +231,11 @@ namespace RPGShop
                     while (true) {
                         input = Console.ReadLine();
                         if (input == "fight") {
-                            Console.WriteLine("Where would you like to travel too?\n   Shrine\n   Maze");
+                            Console.WriteLine("Where would you like to travel too?\n   Cave\n   Maze");
                             while (true)
                             {
                                 input = Console.ReadLine().Trim().ToLower();
-                                if (input == "shrine")
+                                if (input == "cave")
                                 {
                                     Giant g = new Giant();
                                     break;
