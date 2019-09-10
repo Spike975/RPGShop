@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RPGShop
 {
@@ -198,20 +194,20 @@ namespace RPGShop
         /// <returns>Defense value in a float</returns>
         public static float checkDefense(string item)
         {
-            float val = 1f;
+            float val = 0f;
             string[] _item = item.Split(' ');
-            if (_item[0] == "Tatered") { val -= 1f; }
-            else if (_item[0] == "Rusty") { val -= .5f; }
+            if (_item[0] == "Tatered") { val -= .5f; }
+            else if (_item[0] == "Rusty") { val -= .25f; }
             else if (_item[0] == "Crude") { val += .25f; }
-            else if (_item[0] == "Sturdy") { val += 1f; }
-            else if (_item[0] == "Hardened") { val += 1.5f; }
-            else if (_item[0] == "Reinforced") { val += 2f; }
+            else if (_item[0] == "Sturdy") { val += .5f; }
+            else if (_item[0] == "Hardened") { val += .75f; }
+            else if (_item[0] == "Reinforced") { val += 1f; }
 
             if (_item[1] == "Leather") { val -= .25f; }
-            else if (_item[1] == "Chainmail") { val += .25f; }
-            else if (_item[1] == "Bronze") { val += .5f; }
-            else if (_item[1] == "Iron") { val += 1f; }
-            else if (_item[1] == "Steel") { val += 1.5f; }
+            else if (_item[1] == "Chainmail") { val += 0f; }
+            else if (_item[1] == "Bronze") { val += .25f; }
+            else if (_item[1] == "Iron") { val += .5f; }
+            else if (_item[1] == "Steel") { val += .75f; }
 
             if (_item[2] == "Helmet") { val += .25F; }
             else if (_item[2] == "Chestpiece") { val += .75f; }

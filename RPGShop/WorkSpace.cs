@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RPGShop
 {
@@ -18,6 +14,7 @@ namespace RPGShop
     {
         public int health;
         public int gold;
+        public float speed;
         public float defence;
         public float attack;
         public string name;
@@ -42,16 +39,18 @@ namespace RPGShop
         public static TextFile file = new TextFile();//for using the text file class
         public static playerStats plyrStat = new playerStats();// PLAYER STATS!
         public static bool run = true;//For the main code
-        public int baseAttack = 10;
+        public static int baseAttack = 10;
         static void Main()
         { 
             bool tutorial = true;//for the tutorial
+            bool day = false;
             bool done = false;//kinda not needed, but only used once
             string input;//player input string
             file.readFilePlayer();
             file.readFileSK();
             firstEquip();
             plyrStat.gold = 100;//starting gold
+            plyrStat.speed = 1;
             int items = 0;
             //checks items
             while (true) {
@@ -70,6 +69,8 @@ namespace RPGShop
             else
             {
                 Console.WriteLine("Welcome back adventurer.\nPlease renter your name:");
+                tutorial = false;
+                done = true;
             }
             plyrStat.name = Console.ReadLine();
             Console.WriteLine($"Welcome {plyrStat.name}! Today, your adventure begins!\n");
@@ -126,6 +127,10 @@ namespace RPGShop
                 {
                     Console.WriteLine("You should probably visit the equipment shop first!\n");
                 }
+                else if (day)
+                {
+                    Console.WriteLine("\nYou\'ve sucessfuly made it back to town.!\nIt\'s getting pretty late, maybe you should call it a night.");
+                }
                 else
                 {
                     Console.WriteLine("\nYou arive back in town.");
@@ -135,7 +140,10 @@ namespace RPGShop
                 //idk what to do with this
                 if (input == "inn")
                 {
-                    Console.WriteLine("PUB!(WIP)");
+                    Console.WriteLine("You slept the night peacufflyt");
+                    Console.WriteLine("Saving game...... Done.");
+                    file.writeFilePlayer();
+                    day = false;
                 }
                 //hopefully done. to much stuff here
                 else if (input == "shop")
@@ -216,29 +224,62 @@ namespace RPGShop
                     Console.WriteLine("Um, spells?(WIP)");
                 }
                 //big boss fights/avdentures to get items/gold!(need to finish) :)
-                else if (input == "forest")
+                else if (input == "forest"&& !day)
                 {
-                    Console.WriteLine("Where would you like to go?\n   Shrine");
-                    while (true)
-                    {
-                        input = Console.ReadLine().Trim().ToLower();
-                        if (input == "shrine")
-                        {
-                            Giant g = new Giant();
+                    checkEquip();
+                    Console.WriteLine("\nWould you like to explore, or go fight?");
+                    while (true) {
+                        input = Console.ReadLine();
+                        if (input == "fight") {
+                            Console.WriteLine("Where would you like to travel too?\n   Shrine\n   Maze");
+                            while (true)
+                            {
+                                input = Console.ReadLine().Trim().ToLower();
+                                if (input == "shrine")
+                                {
+                                    Giant g = new Giant();
+                                    break;
+                                }
+                                else if (input == "maze")
+                                {
+                                    Minotaur m = new Minotaur();
+                                }
+                                else
+                                {
+                                    Console.WriteLine("\nPlease enter again:");
+                                }
+                            }
                             break;
                         }
-                        else
+                        else if (input == "explore")
                         {
-                            Console.WriteLine("Please enter again:");
+                            Console.WriteLine("\nWIP\n");
+                            break;
+                        }
+                        else{
+                            Console.WriteLine("\nPlease enter again:");
                         }
                     }
-                    Giant enemy = new Giant();
-                    Console.ReadLine();
-                    checkPrice();
-                    shopReset();
+                    if (plyrStat.health>=0)
+                    {
+                        checkPrice();
+                        shopReset();
+
+                    }
+                    else
+                    {
+                        death();
+                        break;
+                    }
+
+                }
+                //if you've already adventured today
+                else if (input == "forest" && day)
+                {
+                    Console.WriteLine("\nYou\'re too exausted to go back out.\nTry going to the inn for some rest.");
                 }
                 //i think i'm done
-                else if(input == "inventory" || input == "equipment")
+                else if(input == "inventory" || input == "inv")
                 {
                     Console.WriteLine("You can check your items, check stats, or equip items.\n\nWhat would you like to do?");
                     while (true)
@@ -280,7 +321,7 @@ namespace RPGShop
                 {
                     Console.WriteLine("You can type \'inn\' to go to the inn.\nYou can type \'shop\' to visit the equipment shop.");
                     Console.WriteLine("You can type \'witch\' or \'hut\' to go to the witches hut.\nYou can type \'forest\' to delve into the forest.");
-                    if (!tutorial) Console.WriteLine("You can type \'inventory\' or \'equipment\' to look at your inventory.\nYou can type \'bal\',\'balance\', or \'gold\' to view you total gold!");
+                    if (!tutorial) Console.WriteLine("You can type \'inventory\' or \'inv\' to access your inventory.\nYou can type \'bal\',\'balance\', or \'gold\' to view you total gold!");
                 }
                 //it kills you, it's pretty simple....
                 else if (input == "kill")
@@ -296,6 +337,7 @@ namespace RPGShop
                 }
             }
             file.writeFilePlayer();
+
         }
         /// <summary>
         /// Resets the shop after you finish the forest 
@@ -312,7 +354,6 @@ namespace RPGShop
             shopKeep[3].value = (Armor.checkValue(shopKeep[3].item) + 25);
             shopKeep[4].item = Weapons.randCreation(8,7,4);
             shopKeep[4].value = (Weapons.checkValue(shopKeep[4].item)+25);
-
         }
         /// <summary>
         /// Prints the inventory of the player
@@ -325,52 +366,6 @@ namespace RPGShop
                 if (i.item != null)
                 {
                     Console.WriteLine(i.item);
-                }
-            }
-        }
-        /// <summary>
-        /// Creates a random item based off dificulty
-        /// </summary>
-        /// <param name="grd">1-5</param>
-        /// <param name="mat">1-4</param>
-        /// <param name="type">1-8</param>
-        /// <param name="wMat">1-7</param>
-        /// <param name="wpn">1-4</param>
-        private static void rewardItem(int grd, int mat, int type,int wMat,int wpn)
-        {
-            int _rand = rand.Next(0,2);
-            string item_ = "";
-            if (_rand == 0)
-            {
-                int newRand = rand.Next(0,4);
-                if (newRand == 0)
-                {
-                    item_ = Armor.randChest(grd,mat);
-                }
-                else if (newRand == 1)
-                {
-                    item_ = Armor.randGaunt(grd,mat);
-                }
-                else if (newRand == 2)
-                {
-                    item_ = Armor.randHelm(grd,mat);
-                }
-                else if (newRand == 3)
-                {
-                    item_ = Armor.randLeg(grd,mat);
-                }
-            }
-            else if (_rand == 1)
-            {
-                item_ = Weapons.randCreation(type,wMat,wpn);
-            }
-            for (int i = 0; i <50; i ++)
-            {
-                if (player[i].item == null)
-                {
-                    Console.WriteLine($"You picked up a {item_}");
-                    player[i].item = item_;
-                    break;
                 }
             }
         }
@@ -869,7 +864,7 @@ namespace RPGShop
                 else if (input == "chestpiece" && items[1] != null)
                 {
                     if (plyrStat.gold <= val[1]) { Console.WriteLine("\nYou don't seem like you have enough money. Come back later and try again.");}
-                    else if (shopKeep[0].item == null) { Console.WriteLine("That has already been sold."); }
+                    else if (shopKeep[1].item == null) { Console.WriteLine("That has already been sold."); }
                     else
                     {
                         Console.WriteLine($"So, the {items[1]} strikes you're fancy, eh? So be it!");
@@ -898,7 +893,7 @@ namespace RPGShop
                 else if (input == "gauntlets" && items[2] != null)
                 {
                     if (plyrStat.gold <= val[2]) { Console.WriteLine("\nYou don't seem like you have enough money. Come back later and try again."); break; }
-                    else if (shopKeep[0].item == null) { Console.WriteLine("That has already been sold."); }
+                    else if (shopKeep[2].item == null) { Console.WriteLine("That has already been sold."); }
                     else
                     {
                         Console.WriteLine($"So, the {items[2]} strikes you're fancy, eh? So be it!");
@@ -927,7 +922,7 @@ namespace RPGShop
                 else if (input == "leggings" && items[3] != null)
                 {
                     if (plyrStat.gold <= val[3]) { Console.WriteLine("\nYou don't seem like you have enough money. Come back later and try again."); }
-                    else if (shopKeep[0].item == null) { Console.WriteLine("That has already been sold."); }
+                    else if (shopKeep[3].item == null) { Console.WriteLine("That has already been sold."); }
                     else
                     {
                         Console.WriteLine($"So, the {items[3]} strikes you're fancy, eh? So be it!");
@@ -956,7 +951,7 @@ namespace RPGShop
                 else if (input == "weapon" && items[4] != null)
                 {
                     if (plyrStat.gold <= val[4]) { Console.WriteLine("\nYou don't seem like you have enough money. Come back later and try again."); }
-                    else if (shopKeep[0].item == null) { Console.WriteLine("That has already been sold."); }
+                    else if (shopKeep[4].item == null) { Console.WriteLine("That has already been sold."); }
                     else
                     {
                         Console.WriteLine($"So, you enjoy the gleam of the {items[4]}, do ya? So be it!");

@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RPGShop
 {
@@ -177,19 +173,19 @@ namespace RPGShop
             else if (_item[0] == "Balanced") { val += .5f; }
             else if (_item[0] == "Strong") { val += .75f; }
             else if (_item[0] == "Tempered") { val += 1.25f; }
-            else if (_item[0] == "Masterworked") { val += 1.75f; }
+            else if (_item[0] == "Masterworked") { val += 1.5f; }
 
-            if (_item[1] == "Wooden") { val -= .5f; }
+            if (_item[1] == "Wooden") { val -= .25f; }
             else if (_item[1] == "Brass") { val += .25f; }
             else if (_item[1] == "Lead") { val += .5f; }
             else if (_item[1] == "Bronze") { val += .75f; }
             else if (_item[1] == "Iron") { val += 1f; }
             else if (_item[1] == "Steel") { val += 1.5f; }
 
-            if (_item[2] == "Sword") { val += 1.15f; }
-            else if (_item[2] == "Axe") { val += 1.15f; }
+            if (_item[2] == "Sword") { val += 1f; }
+            else if (_item[2] == "Axe") { val += 1f; }
             else if (_item[2] == "Pike") { val += 1.25f; }
-            else if (_item[2] == "Hammer") { val += 1.35f; }
+            else if (_item[2] == "Hammer") { val += 1.5f; }
             return val;
         }
     }
