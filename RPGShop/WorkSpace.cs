@@ -46,6 +46,7 @@ namespace RPGShop
         static void Main()
         { 
             bool tutorial = true;//for the tutorial
+            bool forst = false;
             bool witch = true;
             bool day = false;
             bool done = false;//kinda not needed, but only used once
@@ -75,7 +76,7 @@ namespace RPGShop
                 //Does what it says up above, based off the anwser  ^
                 while (true)
                 {
-                    input = Console.ReadLine().ToLower();
+                    input = Console.ReadLine();
                     if (input == "axe")
                     {
                         plyrStat.equipedWeapon = "Chipped Wooden Axe";
@@ -111,7 +112,7 @@ namespace RPGShop
                         Console.WriteLine("Please enter again:");
                     }
                 }
-                Console.WriteLine("\nYou arrive in town. You notice an inn, an equipment shop, what appears to be a witches hut,\n    or you can travel into the forest beyond.");
+                Console.WriteLine("\nYou arrive in town. You notice:\n[1] an Inn,\n[2] an Equipment Shop,\n[3] what appears to be a Witches Hut,\n[4] or you can travel into the forest beyond.");
             }
             else
             {
@@ -125,7 +126,7 @@ namespace RPGShop
             {
                 if (!tutorial && !done)
                 {
-                    Console.WriteLine("\nYou arrive back in town.\nYou can now check your \'inventory\' and your \'gold\'!");
+                    Console.WriteLine("\nYou arrive back in town.\nYou can now check your\n[5] inventory and\n your [6]gold!");
                     done = true;
                 }
                 else if(tutorial)
@@ -141,9 +142,9 @@ namespace RPGShop
                     Console.WriteLine("\nYou arive back in town.");
                 }
                 Console.WriteLine("\nWhere would you like to go?");
-                input = Console.ReadLine().ToLower().Trim();
+                input = Console.ReadLine().Trim();
                 //idk what to do with this
-                if (input == "inn")
+                if (input == "1")
                 {
                     bool inn = false;
                     Console.WriteLine("\nYou like to continue[1], or exit[2]?");
@@ -178,17 +179,17 @@ namespace RPGShop
                     }
                 }
                 //hopefully done. to much stuff here
-                else if (input == "shop")
+                else if (input == "2")
                 {
                     Console.WriteLine("You enter the shop.\n");
                     if (tutorial)
                     {
                         Console.WriteLine("Welcome to my shop! Here, you can buy and sell equipment.");
                         Console.WriteLine("Would you like a more in depth look at how you would do this?.");
-                        input = Console.ReadLine().ToLower().Trim();
+                        input = Console.ReadLine().Trim();
                         if (input == "yes")
                         {
-                            Console.WriteLine("Alright! Like I said previously, you can buy and sell equipment here.\n  You can type \'buy\' or \'sell\' to accomplish this.\n");
+                            Console.WriteLine("Alright! Like I said previously, you can buy and sell equipment here.\n[1] Buy,\n[2] or Sell");
                             shopHelp("sell");
                             Console.WriteLine();
                             shopHelp("buy");
@@ -202,18 +203,18 @@ namespace RPGShop
                         while (true)
                         {
                             input = Console.ReadLine();
-                            if (input == "n"||input == "no")
+                            if (input == "n" || input == "no")
                             {
                                 Console.WriteLine("Oh well, come back next time!");
                                 break;
                             }
-                            else if (input == "sell")
+                            else if (input == "2")
                             {
                                 Console.WriteLine("Alright, let\'s get down to buisness!");
                                 sellShop();
                                 break;
                             }
-                            else if (input == "buy")
+                            else if (input == "1")
                             {
                                 Console.WriteLine("Alright, let\'s see what I have for you today!");
                                 buyShop();
@@ -227,7 +228,7 @@ namespace RPGShop
                                 {
                                     input = Console.ReadLine();
                                     int.TryParse(input, out add);
-                                    if (add != 0&& add > 0)
+                                    if (add != 0 && add > 0)
                                     {
                                         plyrStat.gold += add;
                                         break;
@@ -248,15 +249,16 @@ namespace RPGShop
                     else
                     {
                         Console.WriteLine("Ah, you\'re back! What can I do for ya?");
-                        while (true) {
-                            input = Console.ReadLine().ToLower().Trim();
-                            if (input == "sell")
+                        while (true)
+                        {
+                            input = Console.ReadLine().Trim();
+                            if (input == "2")
                             {
                                 Console.WriteLine("Alright, let\'s get down to buisness!");
                                 sellShop();
                                 break;
                             }
-                            else if (input == "buy")
+                            else if (input == "1")
                             {
                                 Console.WriteLine("Alright, let\'s see what I have for you today!");
                                 buyShop();
@@ -270,204 +272,155 @@ namespace RPGShop
                     }
                 }
                 //POTIONS! For Boss Fights!... i think... EDIT: yes
-                else if (input == "hut" || input == "witch")
+                else if (input == "3")
                 {
                     Console.WriteLine("\nWelcome to my shop.");
                     if (witch)
                     {
                         Console.WriteLine("\nI see that this is your first time here.\nI am a potion vendor, and sell all sorts of potions.\nWell, let me give you an introduction to how this works.");
-                        Console.WriteLine("\nMy main stock is health potions. I sell small, normal, and large versions.\n   The small is 50 gold, and gives 10 health back.\n   The normal is 100 gold, and gives 25 health back.\n   The large is 200 gold, and restores 50 health.");
+                        Console.WriteLine("\nMy main stock is health potions. I sell small, normal, and large versions.\n[1] The small is 50 gold, and gives 10 health back.\n[2] The normal is 100 gold, and gives 25 health back.\n[3] The large is 200 gold, and restores 50 health.");
                         Console.WriteLine("\nNow that you know all this, would you like anything?");
                         witch = false;
-                        while (true)
-                        {
-                            input = Console.ReadLine().Trim().ToLower();
-                            if (input == "small")
-                            {
-                                if (plyrStat.gold < 50)
-                                {
-                                    Console.WriteLine("\nI\'m afraid that you don\'t have enough to purchase this.\nCome back later!");
-                                }
-                                else
-                                {
-                                    Console.WriteLine("\nSounds like a deal!");
-                                    plyrStat.gold -= 50;
-                                    plyrStat.potionS++;
-                                }
-                                break;
-                            }
-                            else if (input == "normal")
-                            {
-                                if (plyrStat.gold < 100)
-                                {
-                                    Console.WriteLine("\nI\'m afraid that you don\'t have enough to purchase this.\nCome back later!");
-                                }
-                                else
-                                {
-                                    Console.WriteLine("\nSounds like a deal!");
-                                    plyrStat.gold -= 100;
-                                    plyrStat.potionM++;
-                                }
-                                break;
-                            }
-                            else if (input == "large")
-                            {
-                                if (plyrStat.gold < 200)
-                                {
-                                    Console.WriteLine("\nI\'m afraid that you don\'t have enough to purchase this.\nCome back later!");
-                                }
-                                else
-                                {
-                                    Console.WriteLine("\nSounds like a deal!");
-                                    plyrStat.gold -= 500;
-                                    plyrStat.potionL++;
-                                }
-                                break;
-                            }
-                            else if (input == "other")
-                            {
-                                Console.WriteLine("\nIt doesn\'t seem like I have anything else in stock.");
-                                Console.WriteLine("\nPlease enter again:");
-                            }
-                            else if (input == "no" || input == "n")
-                            {
-                                Console.WriteLine("\nOkay, have a good day!\nHope to see you again soon!");
-                                break;
-                            }
-                            else if (input == "cheat")
-                            {
-                                Console.WriteLine("\nOkay, what would you like?");
-                                while (true)
-                                {
-                                    int i = 0;
-                                    input = Console.ReadLine().Trim().ToLower();
-                                    if (input == "small")
-                                    {
-                                        Console.WriteLine("\nHow many do you want?");
-                                        int.TryParse(Console.ReadLine(), out i);
-                                        plyrStat.potionS += i;
-                                        break;
-                                    }
-                                    else if (input == "normal")
-                                    {
-                                        Console.WriteLine("\nHow many do you want?");
-                                        int.TryParse(Console.ReadLine(), out i);
-                                        plyrStat.potionM += i;
-                                        break;
-                                    }
-                                    else if(input == "large")
-                                    {
-                                        Console.WriteLine("\nHow many do you want?");
-                                        int.TryParse(Console.ReadLine(), out i);
-                                        plyrStat.potionL += i;
-                                        break;
-                                    }
-                                    else if(input == "all")
-                                    {
-                                        Console.WriteLine("\nHow many do you want?");
-                                        int.TryParse(Console.ReadLine(), out i);
-                                        plyrStat.potionS += i;
-                                        plyrStat.potionM += i;
-                                        plyrStat.potionL += i;
-                                        break;
-                                    }
-                                    else if (i == 0)
-                                    {
-                                        Console.WriteLine("\nPotion amount not entered correctly.\nEnter again.");
-                                    }
-                                    else
-                                    {
-                                        Console.WriteLine("\nDude, you wrote this, how can you forget this?\nEnter again:");
-                                    }
-                                }
-                                break;
-                            }
-                            else
-                            {
-                                Console.WriteLine("\nPlease enter again:");
-                            }
-                        }
                     }
-                    else
+                    while (true)
                     {
-                        Console.WriteLine("\nWhat would you like?");
-                        while (true)
+                        input = Console.ReadLine().Trim();
+                        if (input == "1")
                         {
-                            input = Console.ReadLine().Trim().ToLower();
-                            if (input == "small")
+                            if (plyrStat.gold < 50)
                             {
-                                if (plyrStat.gold<50)
-                                {
-                                    Console.WriteLine("\nI\'m afraid that you don\'t have enough to purchase this.\nCome back later!");
-                                }
-                                else
-                                {
-                                    Console.WriteLine("\nSounds like a deal!");
-                                    plyrStat.gold -= 50;
-                                    plyrStat.potionS++;
-                                }
-                                break;
-                            }
-                            else if (input == "normal")
-                            {
-                                if (plyrStat.gold < 100)
-                                {
-                                    Console.WriteLine("\nI\'m afraid that you don\'t have enough to purchase this.\nCome back later!");
-                                }
-                                else
-                                {
-                                    Console.WriteLine("\nSounds like a deal!");
-                                    plyrStat.gold -= 100;
-                                    plyrStat.potionM++;
-                                }
-                                break;
-                            }
-                            else if (input == "large")
-                            {
-                                if (plyrStat.gold < 200)
-                                {
-                                    Console.WriteLine("\nI\'m afraid that you don\'t have enough to purchase this.\nCome back later!");
-                                }
-                                else
-                                {
-                                    Console.WriteLine("\nSounds like a deal!");
-                                    plyrStat.gold -= 500;
-                                    plyrStat.potionL++;
-                                }
-                                break;
-                            }else if (input =="other")
-                            {
-                                Console.WriteLine("\nIt doesn\'t seem like I have anything else in stock.");
-                                Console.WriteLine("\nPlease enter again:");
+                                Console.WriteLine("\nI\'m afraid that you don\'t have enough to purchase this.\nCome back later!");
                             }
                             else
                             {
-                                Console.WriteLine("\nPlease enter again:");
+                                Console.WriteLine("\nSounds like a deal!");
+                                plyrStat.gold -= 50;
+                                plyrStat.potionS++;
                             }
+                            break;
                         }
-                    }
-                }
-                //big boss fights/avdentures to get items/gold!(need to finish) :) EDIT: Giant almost done EDIT2:Giant done, Explore done, i think
-                else if (input == "forest"&& !day)
-                {
-                    checkEquip(false);
-                    Console.WriteLine("\nWould you like to explore, or go fight?");
-                    while (true) {
-                        input = Console.ReadLine();
-                        if (input == "fight") {
-                            Console.WriteLine("Where would you like to travel too?\n   Cave\n   Maze");
+                        else if (input == "2")
+                        {
+                            if (plyrStat.gold < 100)
+                            {
+                                Console.WriteLine("\nI\'m afraid that you don\'t have enough to purchase this.\nCome back later!");
+                            }
+                            else
+                            {
+                                Console.WriteLine("\nSounds like a deal!");
+                                plyrStat.gold -= 100;
+                                plyrStat.potionM++;
+                            }
+                            break;
+                        }
+                        else if (input == "3")
+                        {
+                            if (plyrStat.gold < 200)
+                            {
+                                Console.WriteLine("\nI\'m afraid that you don\'t have enough to purchase this.\nCome back later!");
+                            }
+                            else
+                            {
+                                Console.WriteLine("\nSounds like a deal!");
+                                plyrStat.gold -= 500;
+                                plyrStat.potionL++;
+                            }
+                            break;
+                        }
+                        else if (input == "other")
+                        {
+                            Console.WriteLine("\nIt doesn\'t seem like I have anything else in stock.");
+                            Console.WriteLine("\nPlease enter again:");
+                        }
+                        else if (input == "no" || input == "n")
+                        {
+                            Console.WriteLine("\nOkay, have a good day!\nHope to see you again soon!");
+                            break;
+                        }
+                        else if (input == "cheat")
+                        {
+                            Console.WriteLine("\nOkay, what would you like?");
                             while (true)
                             {
-                                input = Console.ReadLine().Trim().ToLower();
-                                if (input == "cave")
+                                int i = 0;
+                                input = Console.ReadLine().Trim();
+                                if (input == "1")
+                                {
+                                    Console.WriteLine("\nHow many do you want?");
+                                    int.TryParse(Console.ReadLine(), out i);
+                                    plyrStat.potionS += i;
+                                    break;
+                                }
+                                else if (input == "2")
+                                {
+                                    Console.WriteLine("\nHow many do you want?");
+                                    int.TryParse(Console.ReadLine(), out i);
+                                    plyrStat.potionM += i;
+                                    break;
+                                }
+                                else if (input == "3")
+                                {
+                                    Console.WriteLine("\nHow many do you want?");
+                                    int.TryParse(Console.ReadLine(), out i);
+                                    plyrStat.potionL += i;
+                                    break;
+                                }
+                                else if (input == "4")
+                                {
+                                    Console.WriteLine("\nHow many do you want?");
+                                    int.TryParse(Console.ReadLine(), out i);
+                                    plyrStat.potionS += i;
+                                    plyrStat.potionM += i;
+                                    plyrStat.potionL += i;
+                                    break;
+                                }
+                                else if (i == 0)
+                                {
+                                    Console.WriteLine("\nPotion amount not entered correctly.\nEnter again.");
+                                }
+                                else
+                                {
+                                    Console.WriteLine("\nDude, you wrote this, how can you forget this?\nEnter again:");
+                                }
+                            }
+                            break;
+                        }
+                        else
+                        {
+                            Console.WriteLine("\nPlease enter again:");
+                        }
+                    }
+
+                }
+                //big boss fights/avdentures to get items/gold!(need to finish) :) EDIT: Giant almost done EDIT2:Giant done, Explore done, i think
+                else if (input == "4" && !day)
+                {
+                    checkEquip(false);
+                    if (!forst)
+                    {
+                        Console.WriteLine("\nHere, you can get gold or weapons based off what you go and do.");
+                        Console.WriteLine("\nYou can Explore to fight small monster to earn gold,\n or you can Fight bosses to gain more gold and more items.");
+                        forst = true;
+                    }
+                    Console.WriteLine("\nWould you like to \n[1] Explore,\n[2] or Fight?");
+                    while (true)
+                    {
+                        input = Console.ReadLine();
+                        if (input == "2")
+                        {
+                            Console.WriteLine("Where would you like to travel too?\n[1] Cave\n[2] Maze");
+                            while (true)
+                            {
+                                input = Console.ReadLine().Trim();
+                                if (input == "1")
                                 {
                                     Giant g = new Giant();
                                     break;
                                 }
-                                else if (input == "maze")
+                                else if (input == "2")
                                 {
                                     Minotaur m = new Minotaur();
-                                    break;
+                                    Console.WriteLine("\nEnter again:");
                                 }
                                 else
                                 {
@@ -477,13 +430,13 @@ namespace RPGShop
                             day = true;
                             break;
                         }
-                        else if (input == "explore")
+                        else if (input == "1")
                         {
-                            Console.WriteLine("\nWhere would you like to go:\n   Woods");
+                            Console.WriteLine("\nWhere would you like to go:\n[1] Woods");
                             while (true)
                             {
                                 input = Console.ReadLine();
-                                if (input == "woods"||input == "wood")
+                                if (input == "1")
                                 {
                                     Woods wood = new Woods();
                                 }
@@ -492,12 +445,12 @@ namespace RPGShop
                             day = true;
                             break;
                         }
-                        else{
+                        else
+                        {
                             Console.WriteLine("\nPlease enter again:");
                         }
                     }
-                    Console.Clear();
-                    if (plyrStat.health>=0)
+                    if (plyrStat.health >= 0)
                     {
                         checkPrice();
                         shopReset();
@@ -510,62 +463,60 @@ namespace RPGShop
                     }
                 }
                 //if you've already adventured today
-                else if (input == "forest" && day)
+                else if (input == "4" && day)
                 {
                     Console.WriteLine("\nYou\'re too exausted to go back out.\nTry going to the inn for some rest.");
                 }
                 //i think i'm done
-                else if(input == "inventory" || input == "inv")
+                else if (input == "5")
                 {
-                    Console.WriteLine("You can check your items, check stats, check potions, or equip items.\n\nWhat would you like to do?");
+                    Console.WriteLine("You can check your:\n[1] Items,\n[2] Check Stats,\n[3] Check Potions,\n[4] or Equip Items.");
                     while (true)
                     {
-                        input = Console.ReadLine().ToLower().Trim();
-                        if (input == "items")
+                        input = Console.ReadLine().Trim();
+                        if (input == "1")
                         {
                             sortItems();
                             checkInventory();
                             checkPrice();
                             break;
                         }
-                        else if (input == "stats")
+                        else if (input == "2")
                         {
                             checkEquip(true);
                             break;
                         }
-                        else if (input == "equip")
+                        else if (input == "4")
                         {
                             equipItems();
                             break;
                         }
-                        else if (input == "potions"|| input == "potion")
+                        else if (input == "3")
                         {
                             Console.WriteLine($"\nYou have:\n   Small: {plyrStat.potionS}\n  Normal: {plyrStat.potionM}\n   Large: {plyrStat.potionL}");
                             break;
                         }
                         else if (input == "help")
                         {
-                            Console.WriteLine("\n   You can type \'items\' to view your items, \'stats\' to veiw stats,\n   \'potions\' to view potions and \'equip\' to equip items.");
+                            Console.WriteLine("\n[1] Items\n[2] Check Stats\n[3] Check Potions\n[4] or Equip Items");
                         }
                         else
                         {
                             Console.WriteLine("\nYou can type \'help\' for help.\n\nPlease enter again:");
                         }
                     }
-                    Console.WriteLine("Still more things to do!");
-
                 }
                 //done. pretty easy
-                else if(input == "gold"||input == "bal"||input == "balance")
+                else if (input == "6")
                 {
                     Console.WriteLine($"\nYou have {plyrStat.gold} gold!\nDon't go spend it all in one place.");
                 }
                 //done... unless i add more
                 else if (input == "help")
                 {
-                    Console.WriteLine("You can type \'inn\' to go to the inn.\nYou can type \'shop\' to visit the equipment shop.");
-                    Console.WriteLine("You can type \'witch\' or \'hut\' to go to the witches hut.\nYou can type \'forest\' to delve into the forest.");
-                    if (!tutorial) Console.WriteLine("You can type \'inventory\' or \'inv\' to access your inventory.\nYou can type \'bal\',\'balance\', or \'gold\' to view you total gold!");
+                    Console.WriteLine("[1] Inn\n[2] Equipment Shop");
+                    Console.WriteLine("[3] Witches Hut\n[4] Forest");
+                    if (!tutorial) Console.WriteLine("[5] Inventory\n[6] View Gold");
                 }
                 //it kills you, it's pretty simple.... EDIT: testing purposes
                 else if (input == "kill")
@@ -580,7 +531,7 @@ namespace RPGShop
                     Console.WriteLine("You can also type \'help\' for assistance in where to go!");
                 }
             }
-            Console.WriteLine("\nGame Closed;");
+            Console.WriteLine("\ngameClose();");
             Console.ReadLine();
         }
         /// <summary>
@@ -627,7 +578,7 @@ namespace RPGShop
             int tries = 0;
             int x = 0;
             while (true) {
-                input = Console.ReadLine().ToLower().Trim();
+                input = Console.ReadLine().Trim();
                 if (input == "1")
                 {
                     name = "Helmet";
@@ -963,7 +914,7 @@ namespace RPGShop
             Console.WriteLine("\nWhat would you like to buy?");
             while (true)
             {
-                input = Console.ReadLine().ToLower().Trim();
+                input = Console.ReadLine().Trim();
                 if (input == "stop") { break; }
                 if (input == "1" && items[0] != null)
                 {
@@ -1227,7 +1178,7 @@ namespace RPGShop
             Console.WriteLine("\nWhich would you like to change out?");
             while (true)
             {
-                input = Console.ReadLine().Trim().ToLower();
+                input = Console.ReadLine().Trim();
                 if (input == "1")
                 {
                     ites = input;

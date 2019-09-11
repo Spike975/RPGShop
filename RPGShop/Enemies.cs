@@ -74,7 +74,7 @@ namespace RPGShop
             Console.WriteLine("You notice a low rumbling coming from somewhere in the shrine and go to investigate.\nWhen you go inside, you see a sleeping giant.\nWil you attack?");
             while (true)
             {
-                input = Console.ReadLine().Trim().ToLower();
+                input = Console.ReadLine().Trim();
                 if (input == "no" || input == "n")
                 {
                     Console.WriteLine("\nYou decide not to attack the sleeping giant.\nIn almost an instant, the giant sneezes.\nYou recoil and shout in fear, not understanding what just happened.");
@@ -104,6 +104,7 @@ namespace RPGShop
             {
                 if (health<=0)
                 {
+                    Console.Clear();
                     int i = rand.Next(0,4);
                     Console.WriteLine("\nYou killed the giant. Good job!\nLet\'s see what you got!");
                     if (i == 0)
@@ -172,6 +173,7 @@ namespace RPGShop
                 }
                 else if (WorkSpace.plyrStat.health <= 0)
                 {
+                    Console.Clear();
                     Console.WriteLine("\nThe giant squished you with his giant club.");
                     break;
                 }
@@ -181,100 +183,108 @@ namespace RPGShop
                     {
                         for (int i = 0; i<dif; i++)
                         {
-                            Console.WriteLine($"\nYou have {WorkSpace.plyrStat.health} health.");
-                            Console.WriteLine("\nAttack or Potions:");
-                            while (true)
-                            {
-                                input = Console.ReadLine().Trim().ToLower();
-                                if (input == "attack")
+                            if (health>0) {
+                                Console.WriteLine($"\nYou have {WorkSpace.plyrStat.health} health.");
+                                Console.WriteLine($"The giant has {health} health");
+                                Console.WriteLine("\n[1]Attack or [2]Potions:");
+                                while (true)
                                 {
-                                    string[] item = WorkSpace.plyrStat.equipedWeapon.Split(' ');
-                                    Console.WriteLine($"\nYou swing your {item[2]}.\nYou did {(WorkSpace.plyrStat.attack * WorkSpace.baseAttack) - defense} damage to the giant!");
-                                    health -= (WorkSpace.plyrStat.attack * WorkSpace.baseAttack) - defense;
-                                    break;
-                                }else if (input == "potion"||input == "potions")
-                                {
-                                    Console.WriteLine($"\nYou have:\n   Small: {WorkSpace.plyrStat.potionS}\n  Normal: {WorkSpace.plyrStat.potionM}\n   Large: {WorkSpace.plyrStat.potionL}");
-                                    Console.WriteLine("\nWhich potion would you like to use:");
-                                    while (true)
+                                    input = Console.ReadLine().Trim();
+                                    if (input == "1")
                                     {
-                                        input = Console.ReadLine();
+                                        string[] item = WorkSpace.plyrStat.equipedWeapon.Split(' ');
+                                        Console.WriteLine($"\nYou swing your {item[2]}.\nYou did {(WorkSpace.plyrStat.attack * WorkSpace.baseAttack) - defense} damage to the giant!");
+                                        health -= (WorkSpace.plyrStat.attack * WorkSpace.baseAttack) - defense;
+                                        break;
+                                    } else if (input == "2")
+                                    {
                                         if (WorkSpace.plyrStat.potionS == 0 && WorkSpace.plyrStat.potionM == 0 && WorkSpace.plyrStat.potionL == 0)
                                         {
                                             Console.WriteLine("\nYou don\'t seem to have any potions.\nYou turn was wasted.");
                                             break;
                                         }
-                                        if (input == "small")
+                                        Console.WriteLine($"\nYou have:\n[1] Small: {WorkSpace.plyrStat.potionS}\n[2] Normal: {WorkSpace.plyrStat.potionM}\n[3] Large: {WorkSpace.plyrStat.potionL}");
+                                        Console.WriteLine("\nWhich potion would you like to use:");
+                                        while (true)
                                         {
-                                            if (WorkSpace.plyrStat.potionS >0)
+                                            input = Console.ReadLine();
+                                            if (input == "1")
                                             {
-                                                Console.WriteLine("\nRestored 10 health");
-                                                WorkSpace.plyrStat.health += 10;
-                                                if (WorkSpace.plyrStat.health > 100)
+                                                if (WorkSpace.plyrStat.potionS > 0)
                                                 {
-                                                    WorkSpace.plyrStat.health = 100;
+                                                    Console.WriteLine("\nRestored 10 health");
+                                                    WorkSpace.plyrStat.health += 10;
+                                                    if (WorkSpace.plyrStat.health > 100)
+                                                    {
+                                                        WorkSpace.plyrStat.health = 100;
+                                                    }
+                                                    WorkSpace.plyrStat.potionS--;
+                                                    break;
                                                 }
-                                                WorkSpace.plyrStat.potionS--;
-                                                break;
+                                                else
+                                                {
+                                                    Console.WriteLine("\nYou don\'t seem to have any small potions.\n\nEnter again:");
+                                                }
+                                            }
+                                            else if (input == "2")
+                                            {
+                                                if (WorkSpace.plyrStat.potionM > 0)
+                                                {
+                                                    Console.WriteLine("\nRestored 25 health");
+                                                    WorkSpace.plyrStat.health += 25;
+                                                    if (WorkSpace.plyrStat.health > 100)
+                                                    {
+                                                        WorkSpace.plyrStat.health = 100;
+                                                    }
+                                                    WorkSpace.plyrStat.potionM--;
+                                                    break;
+                                                }
+                                                else
+                                                {
+                                                    Console.WriteLine("\nYou don\'t seem to have any normal potions.\n\nEnter again:");
+                                                }
+                                            }
+                                            else if (input == "3")
+                                            {
+                                                if (WorkSpace.plyrStat.potionL > 0)
+                                                {
+                                                    Console.WriteLine("\nRestored 50 health");
+                                                    WorkSpace.plyrStat.health += 50;
+                                                    if (WorkSpace.plyrStat.health > 100)
+                                                    {
+                                                        WorkSpace.plyrStat.health = 100;
+                                                    }
+                                                    WorkSpace.plyrStat.potionL--;
+                                                    break;
+                                                }
+                                                else
+                                                {
+                                                    Console.WriteLine("\nYou don\'t seem to have any large potions.\n\nEnter again:");
+                                                }
                                             }
                                             else
                                             {
-                                                Console.WriteLine("\nYou don\'t seem to have any small potions.\n\nEnter again:");
+                                                Console.WriteLine("\nPlease enter again:");
                                             }
                                         }
-                                        else if (input == "normal")
-                                        {
-                                            if (WorkSpace.plyrStat.potionM > 0)
-                                            {
-                                                Console.WriteLine("\nRestored 25 health");
-                                                WorkSpace.plyrStat.health += 25;
-                                                if (WorkSpace.plyrStat.health > 100)
-                                                {
-                                                    WorkSpace.plyrStat.health = 100;
-                                                }
-                                                WorkSpace.plyrStat.potionM--;
-                                                break;
-                                            }
-                                            else
-                                            {
-                                                Console.WriteLine("\nYou don\'t seem to have any normal potions.\n\nEnter again:");
-                                            }
-                                        }
-                                        else if (input == "large")
-                                        {
-                                            if (WorkSpace.plyrStat.potionL > 0)
-                                            {
-                                                Console.WriteLine("\nRestored 50 health");
-                                                WorkSpace.plyrStat.health += 50;
-                                                if (WorkSpace.plyrStat.health>100)
-                                                {
-                                                    WorkSpace.plyrStat.health = 100;
-                                                }
-                                                WorkSpace.plyrStat.potionL--;
-                                                break;
-                                            }
-                                            else
-                                            {
-                                                Console.WriteLine("\nYou don\'t seem to have any large potions.\n\nEnter again:");
-                                            }
-                                        }
-                                        else
-                                        {
-                                            Console.WriteLine("\nPlease enter again:");
-                                        }
+                                        break;
                                     }
-                                    break;
+                                    else
+                                    {
+                                        Console.WriteLine("\nPlease enter again:");
+                                    }
                                 }
-                                else
-                                {
-                                    Console.WriteLine("\nPlease enter again:");
-                                }
+                            }
+                            else
+                            {
+                                break;
                             }
                         }
                         isAttack = false;
                     }
                     else
                     {
+                        Console.WriteLine($"\nYou have {WorkSpace.plyrStat.health} health.");
                         Console.WriteLine($"The giant has {health} health");
                         Console.WriteLine($"\nThe giant swings his club.\nYou took {(attack * WorkSpace.baseAttack) - WorkSpace.plyrStat.defence} damage!");
                         WorkSpace.plyrStat.health -= (attack * WorkSpace.baseAttack)-WorkSpace.plyrStat.defence;
@@ -301,7 +311,7 @@ namespace RPGShop
             speed = changeSpeed(1.25f);
             defense = changeDef(1f);
             attack = changeAttack(1.15f);
-            Console.WriteLine("WIP");
+            Console.WriteLine("\nWIP\n\nNo free-be.");
         }
     }
     class Woods : Explore
@@ -344,30 +354,30 @@ namespace RPGShop
                     else if (attack)
                     {
                         Console.WriteLine($"\nYou have {WorkSpace.plyrStat.health} health.");
-                        Console.WriteLine("\nAttack or Potions:");
+                        Console.WriteLine("\n[1]Attack or [2]Potions:");
                         while (true)
                         {
-                            input = Console.ReadLine().Trim().ToLower();
-                            if (input == "attack")
+                            input = Console.ReadLine().Trim();
+                            if (input == "1")
                             {
                                 string[] item = WorkSpace.plyrStat.equipedWeapon.Split(' ');
                                 Console.WriteLine($"\nYou swing your {item[2]}.\nYou did {(WorkSpace.plyrStat.attack * WorkSpace.baseAttack) - _enemies[i].defense} damage to the {_enemies[i].name}!");
                                 _enemies[i].health -= (WorkSpace.plyrStat.attack * WorkSpace.baseAttack) - _enemies[i].defense;
                                 break;
                             }
-                            else if (input == "potion" || input == "potions")
+                            else if (input == "2")
                             {
-                                Console.WriteLine($"\nYou have:\n   Small: {WorkSpace.plyrStat.potionS}\n  Normal: {WorkSpace.plyrStat.potionM}\n   Large: {WorkSpace.plyrStat.potionL}");
+                                if (WorkSpace.plyrStat.potionS == 0 && WorkSpace.plyrStat.potionM == 0 && WorkSpace.plyrStat.potionL == 0)
+                                {
+                                    Console.WriteLine("\nYou don\'t seem to have any potions.\nYou turn was wasted.");
+                                    break;
+                                }
+                                Console.WriteLine($"\nYou have:\n[1] Small: {WorkSpace.plyrStat.potionS}\n[2] Normal: {WorkSpace.plyrStat.potionM}\n[3] Large: {WorkSpace.plyrStat.potionL}");
                                 Console.WriteLine("\nWhich potion would you like to use:");
                                 while (true)
                                 {
                                     input = Console.ReadLine();
-                                    if (WorkSpace.plyrStat.potionS == 0 && WorkSpace.plyrStat.potionM == 0 && WorkSpace.plyrStat.potionL == 0)
-                                    {
-                                        Console.WriteLine("\nYou don\'t seem to have any potions.\nYou turn was wasted.");
-                                        break;
-                                    }
-                                    if (input == "small")
+                                    if (input == "1")
                                     {
                                         if (WorkSpace.plyrStat.potionS > 0)
                                         {
@@ -385,7 +395,7 @@ namespace RPGShop
                                             Console.WriteLine("\nYou don\'t seem to have any small potions.\n\nEnter again:");
                                         }
                                     }
-                                    else if (input == "normal")
+                                    else if (input == "2")
                                     {
                                         if (WorkSpace.plyrStat.potionM > 0)
                                         {
@@ -403,7 +413,7 @@ namespace RPGShop
                                             Console.WriteLine("\nYou don\'t seem to have any normal potions.\n\nEnter again:");
                                         }
                                     }
-                                    else if (input == "large")
+                                    else if (input == "3")
                                     {
                                         if (WorkSpace.plyrStat.potionL > 0)
                                         {

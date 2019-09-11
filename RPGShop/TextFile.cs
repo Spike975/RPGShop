@@ -16,25 +16,12 @@ namespace RPGShop
         {
             StreamReader reader = new StreamReader("player.txt");
             string[] items = reader.ReadLine().Split(',');
-            int x = 0; int maxItem = 0;
-            for (int i = 0; i <items.Length; i++)
+            int x = 0;
+            for (int i = 0; i < items.Length / 2; i++)
             {
-                if (i %2 == 1)
-                {
-                    maxItem++;
-                }
-            }
-            for (int i = 0; i < WorkSpace.player.Length; i++) {
-                if (i >=maxItem)
-                {
-                    WorkSpace.player[i].item = null;
-                    WorkSpace.player[i].value = 0;
-                }
-                else{
-                    WorkSpace.player[i].item = items[x].ToString();
-                    int.TryParse( items[x+1].ToString(), out WorkSpace.player[i].value);
-                    x+=2;
-                }
+                WorkSpace.player[i].item = items[x];
+                int.TryParse(items[x + 1], out WorkSpace.player[i].value);
+                x += 2;
             }
             reader.Close();
         }
@@ -112,16 +99,19 @@ namespace RPGShop
             {
                 if (i % 2 == 0)
                 {
-                    WorkSpace.shopKeep[x].item = items[i].ToString();
+                    WorkSpace.shopKeep[x].item = items[i];
                 }
                 else
                 {
-                    int.TryParse(items[i].ToString(), out WorkSpace.shopKeep[x].value);
+                    int.TryParse(items[i], out WorkSpace.shopKeep[x].value);
                     x++;
                 }
             }
             reader.Close();
         }
+        /// <summary>
+        /// writes file fore shopkeep
+        /// </summary>
         public void writeFileSK()
         {
             StreamWriter writer = new StreamWriter("shopkeep.txt");
@@ -141,6 +131,9 @@ namespace RPGShop
             }
             writer.Close();
         }
+        /// <summary>
+        /// Resest all 
+        /// </summary>
         public void reset()
         {
             StreamWriter writer = new StreamWriter("player.txt");
