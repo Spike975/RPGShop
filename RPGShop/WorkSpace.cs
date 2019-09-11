@@ -134,7 +134,7 @@ namespace RPGShop
                 }
                 else if (day)
                 {
-                    Console.WriteLine("\nYou\'ve sucessfuly made it back to town.!\nIt\'s getting pretty late, maybe you should call it a night.");
+                    Console.WriteLine("\nYou\'ve sucessfuly made it back to town.!\nIt\'s getting pretty late.\nYou should head ot the inn and call it a night.");
                 }
                 else
                 {
@@ -145,13 +145,37 @@ namespace RPGShop
                 //idk what to do with this
                 if (input == "inn")
                 {
-                    Console.WriteLine("You slept the night peacefully");
+                    bool inn = false;
+                    Console.WriteLine("\nYou like to continue[1], or exit[2]?");
+                    while (true)
+                    {
+                        input = Console.ReadLine();
+                        if (input == "1")
+                        {
+                            Console.WriteLine("\nYou sleep peacefully and wake up refreshed!");
+                            break;
+                        }
+                        else if (input == "2")
+                        {
+                            Console.WriteLine("\n You sleep peacfuly. \n\nPlease run the game again when you want to play again!");
+                            inn = true;
+                            break;
+                        }
+                        else
+                        {
+                            Console.WriteLine("\nPlease enter again:");
+                        }
+                    }
                     plyrStat.health = 100;
-                    Console.WriteLine("Saving game...... Done.");
+                    Console.WriteLine("\nSaving game...... Done.");
                     file.writeFilePlayer();
                     file.writeFileSK();
                     file.writePlayerStats();
                     day = false;
+                    if (inn)
+                    {
+                        break;
+                    }
                 }
                 //hopefully done. to much stuff here
                 else if (input == "shop")
@@ -423,7 +447,7 @@ namespace RPGShop
                         }
                     }
                 }
-                //big boss fights/avdentures to get items/gold!(need to finish) :) EDIT: Giant almost done
+                //big boss fights/avdentures to get items/gold!(need to finish) :) EDIT: Giant almost done EDIT2:Giant done, Explore done, i think
                 else if (input == "forest"&& !day)
                 {
                     checkEquip(false);
@@ -450,6 +474,7 @@ namespace RPGShop
                                     Console.WriteLine("\nPlease enter again:");
                                 }
                             }
+                            day = true;
                             break;
                         }
                         else if (input == "explore")
@@ -464,12 +489,14 @@ namespace RPGShop
                                 }
                                 break;
                             }
+                            day = true;
                             break;
                         }
                         else{
                             Console.WriteLine("\nPlease enter again:");
                         }
                     }
+                    Console.Clear();
                     if (plyrStat.health>=0)
                     {
                         checkPrice();
@@ -481,7 +508,6 @@ namespace RPGShop
                         death();
                         break;
                     }
-
                 }
                 //if you've already adventured today
                 else if (input == "forest" && day)
@@ -541,7 +567,7 @@ namespace RPGShop
                     Console.WriteLine("You can type \'witch\' or \'hut\' to go to the witches hut.\nYou can type \'forest\' to delve into the forest.");
                     if (!tutorial) Console.WriteLine("You can type \'inventory\' or \'inv\' to access your inventory.\nYou can type \'bal\',\'balance\', or \'gold\' to view you total gold!");
                 }
-                //it kills you, it's pretty simple....
+                //it kills you, it's pretty simple.... EDIT: testing purposes
                 else if (input == "kill")
                 {
                     death();
@@ -554,8 +580,8 @@ namespace RPGShop
                     Console.WriteLine("You can also type \'help\' for assistance in where to go!");
                 }
             }
-            file.writeFilePlayer();
-
+            Console.WriteLine("\nGame Closed;");
+            Console.ReadLine();
         }
         /// <summary>
         /// Resets the shop after you finish the forest 
@@ -1396,6 +1422,9 @@ namespace RPGShop
             Console.WriteLine("It looks like you have died, better luck next time!");
             file.reset();
             file.readFilePlayer();
+            file.writeFilePlayer();
+            file.writePlayerStats();
+            file.writeFileSK();
             Console.ReadLine();
         }
         /// <summary>

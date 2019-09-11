@@ -1,1 +1,1 @@
-Rusty Iron Helmet,105,Sturdy Chainmail Chestpiece,125,Rusty Iron Gauntlets,115,Tatered Chainmail Leggings,90,Chipped Wooden Sword,45
+Hardened Bronze Helmet,140,Tatered Bronze Chestpiece,130,Rusty Chainmail Gauntlets,85,Sturdy Leather Leggings,105,Tempered Steel Sword,120
