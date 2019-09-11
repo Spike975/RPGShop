@@ -17,10 +17,11 @@ namespace RPGShop
             public int gold;
         }
         public static int enemies;
+        public static string input;
         public static Random rand = new Random();
     }
     /// <summary>
-    /// The basse code for every boss fight
+    /// The base code for every boss fight
     /// </summary>
     class Boss
     {
@@ -313,7 +314,7 @@ namespace RPGShop
             for (int i = 0; i < enemies; i++)
             {
                 _enemies[i].health = 15 * x;
-                _enemies[i].attack = .5f + x;
+                _enemies[i].attack = .5f * x;
                 _enemies[i].defense = 1 * x;
                 _enemies[i].speed = 1f;
                 _enemies[i].name = randomEnemy();
@@ -321,26 +322,163 @@ namespace RPGShop
                 x += .15f;
             }
             Console.WriteLine("\nYou enter the forest and make your way deeper into the forest.");
+            bool done = false;
             for (int i = 0;i < enemies; i ++)
             {
                 bool attack = true;
                 Console.WriteLine($"\nAs you continue are walking, you come across a {_enemies[i].name}");
-                Console.WriteLine($"\nYou");
                 while (true)//battle
                 {
                     if (WorkSpace.plyrStat.health<=0)
                     {
+                        Console.WriteLine($"\nIt seems like the {_enemies[i].name} got the better of you.");
+                        done = true;
+                        break;
+                    }
+                    else if (_enemies[i].health <=0)
+                    {
+                        Console.WriteLine($"\nYou have slain {_enemies[i].name}.\nYou gain {_enemies[i].gold} gold!");
+                        WorkSpace.plyrStat.gold += _enemies[i].gold;
                         break;
                     }
                     else if (attack)
                     {
-
+                        Console.WriteLine($"\nYou have {WorkSpace.plyrStat.health} health.");
+                        Console.WriteLine("\nAttack or Potions:");
+                        while (true)
+                        {
+                            input = Console.ReadLine().Trim().ToLower();
+                            if (input == "attack")
+                            {
+                                string[] item = WorkSpace.plyrStat.equipedWeapon.Split(' ');
+                                Console.WriteLine($"\nYou swing your {item[2]}.\nYou did {(WorkSpace.plyrStat.attack * WorkSpace.baseAttack) - _enemies[i].defense} damage to the {_enemies[i].name}!");
+                                _enemies[i].health -= (WorkSpace.plyrStat.attack * WorkSpace.baseAttack) - _enemies[i].defense;
+                                break;
+                            }
+                            else if (input == "potion" || input == "potions")
+                            {
+                                Console.WriteLine($"\nYou have:\n   Small: {WorkSpace.plyrStat.potionS}\n  Normal: {WorkSpace.plyrStat.potionM}\n   Large: {WorkSpace.plyrStat.potionL}");
+                                Console.WriteLine("\nWhich potion would you like to use:");
+                                while (true)
+                                {
+                                    input = Console.ReadLine();
+                                    if (WorkSpace.plyrStat.potionS == 0 && WorkSpace.plyrStat.potionM == 0 && WorkSpace.plyrStat.potionL == 0)
+                                    {
+                                        Console.WriteLine("\nYou don\'t seem to have any potions.\nYou turn was wasted.");
+                                        break;
+                                    }
+                                    if (input == "small")
+                                    {
+                                        if (WorkSpace.plyrStat.potionS > 0)
+                                        {
+                                            Console.WriteLine("\nRestored 10 health");
+                                            WorkSpace.plyrStat.health += 10;
+                                            if (WorkSpace.plyrStat.health > 100)
+                                            {
+                                                WorkSpace.plyrStat.health = 100;
+                                            }
+                                            WorkSpace.plyrStat.potionS--;
+                                            break;
+                                        }
+                                        else
+                                        {
+                                            Console.WriteLine("\nYou don\'t seem to have any small potions.\n\nEnter again:");
+                                        }
+                                    }
+                                    else if (input == "normal")
+                                    {
+                                        if (WorkSpace.plyrStat.potionM > 0)
+                                        {
+                                            Console.WriteLine("\nRestored 25 health");
+                                            WorkSpace.plyrStat.health += 25;
+                                            if (WorkSpace.plyrStat.health > 100)
+                                            {
+                                                WorkSpace.plyrStat.health = 100;
+                                            }
+                                            WorkSpace.plyrStat.potionM--;
+                                            break;
+                                        }
+                                        else
+                                        {
+                                            Console.WriteLine("\nYou don\'t seem to have any normal potions.\n\nEnter again:");
+                                        }
+                                    }
+                                    else if (input == "large")
+                                    {
+                                        if (WorkSpace.plyrStat.potionL > 0)
+                                        {
+                                            Console.WriteLine("\nRestored 50 health");
+                                            WorkSpace.plyrStat.health += 50;
+                                            if (WorkSpace.plyrStat.health > 100)
+                                            {
+                                                WorkSpace.plyrStat.health = 100;
+                                            }
+                                            WorkSpace.plyrStat.potionL--;
+                                            break;
+                                        }
+                                        else
+                                        {
+                                            Console.WriteLine("\nYou don\'t seem to have any large potions.\n\nEnter again:");
+                                        }
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("\nPlease enter again:");
+                                    }
+                                }
+                                break;
+                            }
+                            else
+                            {
+                                Console.WriteLine("\nPlease enter again:");
+                            }
+                        }
+                        attack = false;
                     }
-                    else {
-                        break;
+                    else
+                    {
+                        Console.WriteLine($"The {_enemies[i].name} has {_enemies[i].health} health");
+                        Console.WriteLine($"\nThe {_enemies[i].name} attacks you.\nYou took {(_enemies[i].attack * WorkSpace.baseAttack) - WorkSpace.plyrStat.defence} damage!");
+                        WorkSpace.plyrStat.health -= (_enemies[i].attack * WorkSpace.baseAttack) - WorkSpace.plyrStat.defence;
+                        if ((_enemies[i].attack * WorkSpace.baseAttack) - WorkSpace.plyrStat.defence >= 30 && !done)
+                        {
+                            Console.WriteLine("\nMaybe you shouldn\'t have decided to fight this....");
+                            done = true;
+                        }
+                        attack = true;
                     }
                 }
-                Console.WriteLine("\nWould you like to continue?");
+                if (i<enemies-1)
+                {
+                    Console.WriteLine("\nThere seems to be more enemies.\nWould you like to continue?");
+                    while(true)
+                {
+                    input = Console.ReadLine();
+                    if (input == "yes"||input =="y")
+                    {
+                        Console.WriteLine("\nAlright, let\'s continue!");
+                        break;
+                    }
+                    else if (input == "no" || input == "n")
+                    {
+                        Console.WriteLine("\nAlright, let\'s continue!");
+                        done = true;
+                        break;
+                    }
+                    else{
+                        Console.WriteLine("\nPlease enter again");
+                    }
+                }
+                }
+                else
+                {
+                    Console.WriteLine("\nYou\'ve killed all the enemies!");
+                    break;
+                }
+                if (done)
+                {
+                    break;
+                }
             }
         }
         public static string randomEnemy()
