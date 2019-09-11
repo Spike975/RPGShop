@@ -1,1 +1,1 @@
-Crude Leather Helmet,75,Crude Leather Chestpeice,105,Crude Leather Gauntlets,85,Crude Leather Leggings,95,Chipped Wooden Sword,45
+Rusty Iron Helmet,105,Sturdy Chainmail Chestpiece,125,Rusty Iron Gauntlets,115,Tatered Chainmail Leggings,90,Chipped Wooden Sword,45

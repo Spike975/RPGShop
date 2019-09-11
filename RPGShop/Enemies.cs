@@ -2,6 +2,9 @@
 
 namespace RPGShop
 {
+    /// <summary>
+    /// the base code
+    /// </summary>
     class Explore
     {
         public struct enemy
@@ -16,6 +19,9 @@ namespace RPGShop
         public static int enemies;
         public static Random rand = new Random();
     }
+    /// <summary>
+    /// The basse code for every boss fight
+    /// </summary>
     class Boss
     {
         public static float health = 100;
@@ -315,6 +321,27 @@ namespace RPGShop
                 x += .15f;
             }
             Console.WriteLine("\nYou enter the forest and make your way deeper into the forest.");
+            for (int i = 0;i < enemies; i ++)
+            {
+                bool attack = true;
+                Console.WriteLine($"\nAs you continue are walking, you come across a {_enemies[i].name}");
+                Console.WriteLine($"\nYou");
+                while (true)//battle
+                {
+                    if (WorkSpace.plyrStat.health<=0)
+                    {
+                        break;
+                    }
+                    else if (attack)
+                    {
+
+                    }
+                    else {
+                        break;
+                    }
+                }
+                Console.WriteLine("\nWould you like to continue?");
+            }
         }
         public static string randomEnemy()
         {
@@ -338,7 +365,7 @@ namespace RPGShop
             }
             else if (_rand == 4)
             {
-                name = "";
+                name = "Porcupine";
             }
             return name;
         }

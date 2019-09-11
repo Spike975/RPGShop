@@ -13,7 +13,7 @@ namespace RPGShop
     class Weapons
     {
         private static Random rand = new Random();
-
+        
         /// <summary>
         /// Allows for the creation of a random quality for a weapon
         /// </summary>

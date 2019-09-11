@@ -12,11 +12,11 @@ namespace RPGShop
     }
     struct playerStats
     {
-        public float health;
         public int gold;
         public int potionS;
         public int potionM;
         public int potionL;
+        public float health;
         public float speed;
         public float defence;
         public float attack;
@@ -27,7 +27,7 @@ namespace RPGShop
         public string equipeGaunt;
         public string equipedWeapon;
     }
-
+    //If time, add random percentages for armor and weapons
     class WorkSpace
     {
         /// <summary>
@@ -52,9 +52,8 @@ namespace RPGShop
             string input;//player input string
             file.readFilePlayer();
             file.readFileSK();
+            file.readPlayerStats();
             firstEquip();
-            plyrStat.gold = 100;//starting gold
-            plyrStat.speed = 1;
             int items = 0;
             //checks items
             while (true) {
@@ -67,58 +66,60 @@ namespace RPGShop
                 }
                 break;
             }
-            if (items < 5) {
+            if (items < 5)
+            {
                 Console.WriteLine("Welcome to a short RPG adventure game.\n\nPlease enter you name adventurer:");
+                plyrStat.name = Console.ReadLine();
+                Console.WriteLine($"Welcome {plyrStat.name}! Today, your adventure begins!\n");
+                Console.WriteLine("Would you like to start off with a sword or an axe?");
+                //Does what it says up above, based off the anwser  ^
+                while (true)
+                {
+                    input = Console.ReadLine().ToLower();
+                    if (input == "axe")
+                    {
+                        plyrStat.equipedWeapon = "Chipped Wooden Axe";
+                        for (int i = 0; i < player.Length; i++)
+                        {
+                            if (player[i].item == null)
+                            {
+                                player[i].item = "Chipped Wooden Axe";
+                                player[i].value = Weapons.checkValue("Chipped Wooden Axe");
+                                Console.WriteLine($"You have equiped the {player[i].item}!");
+                                break;
+                            }
+                        }
+                        break;
+                    }
+                    else if (input == "sword")
+                    {
+                        plyrStat.equipedWeapon = "Chipped Wooden Sword";
+                        for (int i = 0; i < player.Length; i++)
+                        {
+                            if (player[i].item == null)
+                            {
+                                player[i].item = "Chipped Wooden Sword";
+                                player[i].value = Weapons.checkValue("Chipped Wooden Sword");
+                                Console.WriteLine($"You have equiped the {player[i].item}!");
+                                break;
+                            }
+                        }
+                        break;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Please enter again:");
+                    }
+                }
+                Console.WriteLine("\nYou arrive in town. You notice an inn, an equipment shop, what appears to be a witches hut,\n    or you can travel into the forest beyond.");
             }
             else
             {
-                Console.WriteLine("Welcome back adventurer.\nPlease renter your name:");
+                Console.WriteLine($"Welcome back {plyrStat.name}.");
                 tutorial = false;
                 done = true;
             }
-            plyrStat.name = Console.ReadLine();
-            Console.WriteLine($"Welcome {plyrStat.name}! Today, your adventure begins!\n");
-            Console.WriteLine("Would you like to start off with a sword or an axe?");
-            //Does what it says up above, based off the anwser  ^
-            while (true)
-            {
-                input = Console.ReadLine().ToLower();
-                if (input == "axe")
-                {
-                    plyrStat.equipedWeapon = "Chipped Wooden Axe";
-                    for (int i = 0; i <player.Length; i ++)
-                    {
-                        if (player[i].item == null)
-                        {
-                            player[i].item = "Chipped Wooden Axe";
-                            player[i].value = Weapons.checkValue("Chipped Wooden Axe");
-                            Console.WriteLine($"You have equiped the {player[i].item}!");
-                            break;
-                        }
-                    }
-                    break;
-                }else if (input == "sword")
-                {
-                    plyrStat.equipedWeapon = "Chipped Wooden Sword";
-                    for (int i = 0; i < player.Length; i++)
-                    {
-                        if (player[i].item == null)
-                        {
-                            player[i].item = "Chipped Wooden Sword";
-                            player[i].value = Weapons.checkValue("Chipped Wooden Sword");
-                            Console.WriteLine($"You have equiped the {player[i].item}!");
-                            break;
-                        }
-                    }
-                    break;
-                }
-                else
-                {
-                    Console.WriteLine("Please enter again:");
-                }
-            }
-            plyrStat.health = 100;
-            Console.WriteLine("\nYou arrive in town. You notice an inn, an equipment shop, what appears to be a witches hut,\n    or you can travel into the forest beyond.");
+            
             //main piece of code:
             while (run)
             {
@@ -148,6 +149,8 @@ namespace RPGShop
                     plyrStat.health = 100;
                     Console.WriteLine("Saving game...... Done.");
                     file.writeFilePlayer();
+                    file.writeFileSK();
+                    file.writePlayerStats();
                     day = false;
                 }
                 //hopefully done. to much stuff here
@@ -192,6 +195,25 @@ namespace RPGShop
                                 buyShop();
                                 break;
                             }
+                            else if (input == "cheat")
+                            {
+                                Console.WriteLine("\nHow much gold would you like to add?");
+                                int add = 0;
+                                while (true)
+                                {
+                                    input = Console.ReadLine();
+                                    int.TryParse(input, out add);
+                                    if (add != 0&& add > 0)
+                                    {
+                                        plyrStat.gold += add;
+                                        break;
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("\nPlease enter again:");
+                                    }
+                                }
+                            }
                             else
                             {
                                 Console.WriteLine("I didn\'t quite get that.\nCould you say that again?");
@@ -230,7 +252,7 @@ namespace RPGShop
                     if (witch)
                     {
                         Console.WriteLine("\nI see that this is your first time here.\nI am a potion vendor, and sell all sorts of potions.\nWell, let me give you an introduction to how this works.");
-                        Console.WriteLine("\nMy main stock is health potions. I sell small, normal, and large versions.\n   The small is 50 glod, and gives 10 health back.\n   The normal is 100 gold, and gives 25 health back.\n   The large is 200 gold, and restores 50 health.");
+                        Console.WriteLine("\nMy main stock is health potions. I sell small, normal, and large versions.\n   The small is 50 gold, and gives 10 health back.\n   The normal is 100 gold, and gives 25 health back.\n   The large is 200 gold, and restores 50 health.");
                         Console.WriteLine("\nNow that you know all this, would you like anything?");
                         witch = false;
                         while (true)
@@ -1386,23 +1408,23 @@ namespace RPGShop
                 if (i.item != null)
                 {
                     string[] _item = i.item.Split(' ');
-                    if (plyrStat.equipeChest == null && _item[2] == "Chestpiece")
+                    if ((plyrStat.equipeChest == null || plyrStat.equipeChest  == "") && _item[2] == "Chestpiece")
                     {
                         plyrStat.equipeChest = i.item;
                     }
-                    if (plyrStat.equipeGaunt == null && _item[2] == "Gauntlets")
+                    if ((plyrStat.equipeGaunt  == null || plyrStat.equipeGaunt == "") && _item[2] == "Gauntlets")
                     {
                         plyrStat.equipeGaunt = i.item;
                     }
-                    if (plyrStat.equipeLeg == null && _item[2] == "Leggings")
+                    if ((plyrStat.equipeLeg == null || plyrStat.equipeLeg == "") && _item[2] == "Leggings")
                     {
                         plyrStat.equipeLeg= i.item;
                     }
-                    if (plyrStat.equipedHelm == null && _item[2] == "Helmet")
+                    if ((plyrStat.equipedHelm == null || plyrStat.equipedHelm== "") && _item[2] == "Helmet")
                     {
                         plyrStat.equipedHelm = i.item;
                     }
-                    if (plyrStat.equipedWeapon == null && (_item[2] == "Axe"|| _item[2] == "Sword"|| _item[2] == "Mace"|| _item[2] == "Pike"))
+                    if ((plyrStat.equipedWeapon == null || plyrStat.equipedWeapon == "") && (_item[2] == "Axe"|| _item[2] == "Sword"|| _item[2] == "Mace"|| _item[2] == "Pike"))
                     {
                         plyrStat.equipedWeapon = i.item;
                     }
