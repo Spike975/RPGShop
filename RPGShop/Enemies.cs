@@ -17,6 +17,7 @@ namespace RPGShop
             public int gold;
         }
         public static int enemies;
+        public static int totalGold;
         public static string input;
         public static Random rand = new Random();
     }
@@ -105,70 +106,10 @@ namespace RPGShop
                 if (health<=0)
                 {
                     Console.Clear();
-                    int i = rand.Next(0,4);
-                    Console.WriteLine("\nYou killed the giant. Good job!\nLet\'s see what you got!");
-                    if (i == 0)
-                    {
-                        for (int x = 0; x < 50; x++) {
-                            if (WorkSpace.player[x].item == null) {
-                                WorkSpace.player[x].item = Armor.randHelm(3,5,2,4);
-                                Console.WriteLine($"You found a {WorkSpace.player[x].item}!");
-                                break;
-                            }
-                        }
-                    }
-                    else if(i == 1)
-                    {
-                        for (int x = 0; x < 50; x++)
-                        {
-                            if (WorkSpace.player[x].item == null)
-                            {
-                                WorkSpace.player[x].item = Armor.randChest(3, 5, 2, 4);
-                                Console.WriteLine($"You found a {WorkSpace.player[x].item}!");
-                                break;
-                            }
-                        }
-                    }
-                    else if (i == 2)
-                    {
-                        for (int x = 0; x < 50; x++)
-                        {
-                            if (WorkSpace.player[x].item == null)
-                            {
-                                WorkSpace.player[x].item = Armor.randGaunt(3, 5, 2, 4);
-                                Console.WriteLine($"You found a pair of {WorkSpace.player[x].item}!");
-                                break;
-                            }
-                        }
-                    }
-                    else if (i == 3)
-                    {
-                        for (int x = 0; x < 50; x++)
-                        {
-                            if (WorkSpace.player[x].item == null)
-                            {
-                                WorkSpace.player[x].item = Armor.randLeg(3, 5, 2, 4);
-                                Console.WriteLine($"You found a pair of {WorkSpace.player[x].item}!");
-                                break;
-                            }
-                        }
-                    }
-                    else if (i == 4)
-                    {
-                        for (int x = 0; x < 50; x++)
-                        {
-                            if (WorkSpace.player[x].item == null)
-                            {
-                                WorkSpace.player[x].item = Weapons.randCreation(4,7,3,6,2,3);
-                                Console.WriteLine($"You found a {WorkSpace.player[x].item}!");
-                                break;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        Console.WriteLine("IDK how, but you broke the game...");
-                    }
+                    Console.WriteLine("\nYou killed the giant. Good job!");
+                    int gold = rand.Next(350,500);
+                    Console.WriteLine($"\nYou gain {gold} gold!");
+                    WorkSpace.plyrStat.gold += gold;
                     break;
                 }
                 else if (WorkSpace.plyrStat.health <= 0)
@@ -328,7 +269,7 @@ namespace RPGShop
                 _enemies[i].defense = 1 * x;
                 _enemies[i].speed = 1f;
                 _enemies[i].name = randomEnemy();
-                _enemies[i].gold = 5 + (5*i);
+                _enemies[i].gold = rand.Next(5+(5*i),10+(5*i));
                 x += .15f;
             }
             Console.WriteLine("\nYou enter the forest and make your way deeper into the forest.");
@@ -341,14 +282,17 @@ namespace RPGShop
                 {
                     if (WorkSpace.plyrStat.health<=0)
                     {
+                        Console.Clear();
                         Console.WriteLine($"\nIt seems like the {_enemies[i].name} got the better of you.");
                         done = true;
                         break;
                     }
                     else if (_enemies[i].health <=0)
                     {
+                        Console.Clear();
                         Console.WriteLine($"\nYou have slain {_enemies[i].name}.\nYou gain {_enemies[i].gold} gold!");
                         WorkSpace.plyrStat.gold += _enemies[i].gold;
+                        totalGold += _enemies[i].gold;
                         break;
                     }
                     else if (attack)
@@ -458,31 +402,34 @@ namespace RPGShop
                         attack = true;
                     }
                 }
-                if (i<enemies-1)
+                if (i < enemies - 1)
                 {
                     Console.WriteLine("\nThere seems to be more enemies.\nWould you like to continue?");
-                    while(true)
-                {
-                    input = Console.ReadLine();
-                    if (input == "yes"||input =="y")
+                    while (true)
                     {
-                        Console.WriteLine("\nAlright, let\'s continue!");
-                        break;
+                        input = Console.ReadLine();
+                        if (input == "yes" || input == "y")
+                        {
+                            Console.WriteLine("\nAlright, let\'s continue!");
+                            break;
+                        }
+                        else if (input == "no" || input == "n")
+                        {
+                            Console.WriteLine("\nAlright, come back later!");
+                            Console.WriteLine($"\nYou gained {totalGold} gold!");
+                            done = true;
+                            break;
+                        }
+                        else
+                        {
+                            Console.WriteLine("\nPlease enter again");
+                        }
                     }
-                    else if (input == "no" || input == "n")
-                    {
-                        Console.WriteLine("\nAlright, let\'s continue!");
-                        done = true;
-                        break;
-                    }
-                    else{
-                        Console.WriteLine("\nPlease enter again");
-                    }
-                }
                 }
                 else
                 {
-                    Console.WriteLine("\nYou\'ve killed all the enemies!");
+                    Console.WriteLine($"\nYou\'ve killed all the enemies!");
+                    Console.WriteLine($"\nYou gained {totalGold} gold!");
                     break;
                 }
                 if (done)

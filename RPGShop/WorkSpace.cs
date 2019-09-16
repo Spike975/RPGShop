@@ -43,6 +43,7 @@ namespace RPGShop
         public static playerStats plyrStat = new playerStats();// PLAYER STATS!
         public static bool run = true;//For the main code
         public static int baseAttack = 10;
+
         static void Main()
         { 
             bool tutorial = true;//for the tutorial
@@ -120,22 +121,21 @@ namespace RPGShop
                 tutorial = false;
                 done = true;
             }
-            
             //main piece of code:
             while (run)
             {
                 if (!tutorial && !done)
                 {
-                    Console.WriteLine("\nYou arrive back in town.\nYou can now check your\n[5] inventory and\n your [6]gold!");
+                    Console.WriteLine("\nYou arrive back in town.\nYou can now check your\n[5] inventory and your\n[6] gold!");
                     done = true;
                 }
                 else if(tutorial)
                 {
-                    Console.WriteLine("You should probably visit the equipment shop first!\n");
+                    Console.WriteLine("\nYou should probably visit the equipment shop first!\n");
                 }
                 else if (day)
                 {
-                    Console.WriteLine("\nYou\'ve sucessfuly made it back to town.!\nIt\'s getting pretty late.\nYou should head ot the inn and call it a night.");
+                    Console.WriteLine("\nYou\'ve sucessfuly made it back to town!\nIt\'s getting pretty late.\nYou should head ot the inn and call it a night.");
                 }
                 else
                 {
@@ -146,8 +146,9 @@ namespace RPGShop
                 //idk what to do with this
                 if (input == "1")
                 {
+                    Console.Clear();
                     bool inn = false;
-                    Console.WriteLine("\nYou like to continue[1], or exit[2]?");
+                    Console.WriteLine("\nYou like to\n[1] Continue,\n[2] or exit?");
                     while (true)
                     {
                         input = Console.ReadLine();
@@ -172,7 +173,12 @@ namespace RPGShop
                     file.writeFilePlayer();
                     file.writeFileSK();
                     file.writePlayerStats();
-                    day = false;
+                    if (day)
+                    {
+                        shopReset();
+                        Console.WriteLine("\nThe shopkep has new items, you should go check it out!");
+                        day = false;
+                    }
                     if (inn)
                     {
                         break;
@@ -181,11 +187,13 @@ namespace RPGShop
                 //hopefully done. to much stuff here
                 else if (input == "2")
                 {
+                    Console.Clear();
                     Console.WriteLine("You enter the shop.\n");
                     if (tutorial)
                     {
-                        Console.WriteLine("Welcome to my shop! Here, you can buy and sell equipment.");
-                        Console.WriteLine("Would you like a more in depth look at how you would do this?.");
+                        Console.WriteLine("\nWelcome to my shop! Here, you can buy and sell equipment.");
+                        Console.WriteLine("This is main way to get more equipment.");
+                        Console.WriteLine("\nWould you like a more in depth look at how you would do this?.");
                         input = Console.ReadLine().Trim();
                         if (input == "yes")
                         {
@@ -200,80 +208,61 @@ namespace RPGShop
                             Console.WriteLine("Oh well, I guess you already know how to use shops.\nNo big deal I suppose.");
                         }
                         Console.WriteLine("\nSo, can I do anything for ya?");
-                        while (true)
-                        {
-                            input = Console.ReadLine();
-                            if (input == "n" || input == "no")
-                            {
-                                Console.WriteLine("Oh well, come back next time!");
-                                break;
-                            }
-                            else if (input == "2")
-                            {
-                                Console.WriteLine("Alright, let\'s get down to buisness!");
-                                sellShop();
-                                break;
-                            }
-                            else if (input == "1")
-                            {
-                                Console.WriteLine("Alright, let\'s see what I have for you today!");
-                                buyShop();
-                                break;
-                            }
-                            else if (input == "cheat")
-                            {
-                                Console.WriteLine("\nHow much gold would you like to add?");
-                                int add = 0;
-                                while (true)
-                                {
-                                    input = Console.ReadLine();
-                                    int.TryParse(input, out add);
-                                    if (add != 0 && add > 0)
-                                    {
-                                        plyrStat.gold += add;
-                                        break;
-                                    }
-                                    else
-                                    {
-                                        Console.WriteLine("\nPlease enter again:");
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                Console.WriteLine("I didn\'t quite get that.\nCould you say that again?");
-                            }
-                        }
                         tutorial = false;
                     }
                     else
                     {
                         Console.WriteLine("Ah, you\'re back! What can I do for ya?");
-                        while (true)
+                    }
+                    while (true)
+                    {
+                        input = Console.ReadLine();
+                        if (input == "n" || input == "no")
                         {
-                            input = Console.ReadLine().Trim();
-                            if (input == "2")
+                            Console.WriteLine("Oh well, come back next time!");
+                            break;
+                        }
+                        else if (input == "2")
+                        {
+                            Console.WriteLine("Alright, let\'s get down to buisness!");
+                            sellShop();
+                            break;
+                        }
+                        else if (input == "1")
+                        {
+                            Console.WriteLine("Alright, let\'s see what I have for you today!");
+                            buyShop();
+                            break;
+                        }
+                        else if (input == "cheat")
+                        {
+                            Console.WriteLine("\nHow much gold would you like to add?");
+                            int add = 0;
+                            while (true)
                             {
-                                Console.WriteLine("Alright, let\'s get down to buisness!");
-                                sellShop();
-                                break;
+                                input = Console.ReadLine();
+                                int.TryParse(input, out add);
+                                if (add != 0 && add > 0)
+                                {
+                                    plyrStat.gold += add;
+                                    break;
+                                }
+                                else
+                                {
+                                    Console.WriteLine("\nPlease enter again:");
+                                }
                             }
-                            else if (input == "1")
-                            {
-                                Console.WriteLine("Alright, let\'s see what I have for you today!");
-                                buyShop();
-                                break;
-                            }
-                            else
-                            {
-                                Console.WriteLine("I didn\'t quite get that.\nCould you say that again?");
-                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("I didn\'t quite get that.\nCould you say that again?");
                         }
                     }
                 }
                 //POTIONS! For Boss Fights!... i think... EDIT: yes
                 else if (input == "3")
                 {
+                    Console.Clear();
                     Console.WriteLine("\nWelcome to my shop.");
                     if (witch)
                     {
@@ -281,6 +270,10 @@ namespace RPGShop
                         Console.WriteLine("\nMy main stock is health potions. I sell small, normal, and large versions.\n[1] The small is 50 gold, and gives 10 health back.\n[2] The normal is 100 gold, and gives 25 health back.\n[3] The large is 200 gold, and restores 50 health.");
                         Console.WriteLine("\nNow that you know all this, would you like anything?");
                         witch = false;
+                    }
+                    else
+                    {
+                        Console.WriteLine("\nWhat would you like?");
                     }
                     while (true)
                     {
@@ -395,11 +388,12 @@ namespace RPGShop
                 //big boss fights/avdentures to get items/gold!(need to finish) :) EDIT: Giant almost done EDIT2:Giant done, Explore done, i think
                 else if (input == "4" && !day)
                 {
+                    Console.Clear();
                     checkEquip(false);
                     if (!forst)
                     {
                         Console.WriteLine("\nHere, you can get gold or weapons based off what you go and do.");
-                        Console.WriteLine("\nYou can Explore to fight small monster to earn gold,\n or you can Fight bosses to gain more gold and more items.");
+                        Console.WriteLine("\nYou can Explore to fight small monster to earn gold,\n or you can Fight bosses to gain more gold!");
                         forst = true;
                     }
                     Console.WriteLine("\nWould you like to \n[1] Explore,\n[2] or Fight?");
@@ -453,8 +447,7 @@ namespace RPGShop
                     if (plyrStat.health >= 0)
                     {
                         checkPrice();
-                        shopReset();
-                        Console.WriteLine("\nYou return triumphant from the forest!... but you\'re exaushted");
+                        Console.WriteLine("\nYou return triumphant from the forest!... but you\'re exhausted...");
                     }
                     else
                     {
@@ -470,6 +463,7 @@ namespace RPGShop
                 //i think i'm done
                 else if (input == "5")
                 {
+                    Console.Clear();
                     Console.WriteLine("You can check your:\n[1] Items,\n[2] Check Stats,\n[3] Check Potions,\n[4] or Equip Items.");
                     while (true)
                     {
@@ -514,6 +508,7 @@ namespace RPGShop
                 //done... unless i add more
                 else if (input == "help")
                 {
+                    Console.Clear();
                     Console.WriteLine("[1] Inn\n[2] Equipment Shop");
                     Console.WriteLine("[3] Witches Hut\n[4] Forest");
                     if (!tutorial) Console.WriteLine("[5] Inventory\n[6] View Gold");
@@ -540,15 +535,15 @@ namespace RPGShop
         private static void shopReset()
         {
             shopKeep[0].item = Armor.randHelm(5,4);
-            shopKeep[0].value = (Armor.checkValue(shopKeep[0].item)+25);
+            shopKeep[0].value = (Armor.checkValue(shopKeep[0].item)+50);
             shopKeep[1].item = Armor.randChest(5,4);
-            shopKeep[1].value = (Armor.checkValue(shopKeep[1].item) + 25);
+            shopKeep[1].value = (Armor.checkValue(shopKeep[1].item) + 50);
             shopKeep[2].item = Armor.randGaunt(5,4);
-            shopKeep[2].value = (Armor.checkValue(shopKeep[2].item) + 25);
+            shopKeep[2].value = (Armor.checkValue(shopKeep[2].item) + 50);
             shopKeep[3].item = Armor.randLeg(5,4);
-            shopKeep[3].value = (Armor.checkValue(shopKeep[3].item) + 25);
+            shopKeep[3].value = (Armor.checkValue(shopKeep[3].item) + 50);
             shopKeep[4].item = Weapons.randCreation(8,7,4);
-            shopKeep[4].value = (Weapons.checkValue(shopKeep[4].item)+25);
+            shopKeep[4].value = (Weapons.checkValue(shopKeep[4].item)+50);
         }
         /// <summary>
         /// Prints the inventory of the player
@@ -659,19 +654,22 @@ namespace RPGShop
                     name = "Leggings";
                     foreach (playerItem i in player)
                     {
-                        string[] _item = i.item.Split(' ');
-                        if (_item[2] == "Leggings")
+                        if (i.item != null)
                         {
-                            items[x] = i.item;
-                            if (i.value == 0)
+                            string[] _item = i.item.Split(' ');
+                            if (_item[2] == "Leggings")
                             {
-                                val[x] = Weapons.checkValue(i.item);
+                                items[x] = i.item;
+                                if (i.value == 0)
+                                {
+                                    val[x] = Weapons.checkValue(i.item);
+                                }
+                                else
+                                {
+                                    val[x] = i.value;
+                                }
+                                x++;
                             }
-                            else
-                            {
-                                val[x] = i.value;
-                            }
-                            x++;
                         }
                     }
                     break;
@@ -881,10 +879,10 @@ namespace RPGShop
 
             if (words == "sell")
             {
-                Console.WriteLine("To sell, you go to the shop, then type in \'sell\'. Then you type the number of what you want to sell, then type the item number you want to sell.");
+                Console.WriteLine("To sell, you go to the shop, then type in \'2\'. Then you type the number of what you want to sell,\n then type the item number you want to sell.");
             }else if (words == "buy")
             {
-                Console.WriteLine("To buy, you go to the shop, type \'buy\', then follow type the number of the item that you want to buy.");
+                Console.WriteLine("To buy, you go to the shop, type \'1\', then follow type the number of the item that you want to buy.");
             }
             else
             {
@@ -904,11 +902,16 @@ namespace RPGShop
             int x = 0;
             foreach (shopItem i in shopKeep)
             {
-                if (i.item != null) {
-                    Console.WriteLine($"[{x+1}] {i.item} for {i.value} gold.");
-                    items[x] = i.item;
-                    val[x] = i.value;
+                if (i.item != null && i.item != "")
+                {
+                    Console.WriteLine($"[{x + 1}] {i.item} for {i.value} gold.");
                 }
+                else
+                {
+                    Console.WriteLine($"[{x + 1}] --Item is Sold--");
+                }
+                items[x] = i.item;
+                val[x] = i.value;
                 x++;
             }
             Console.WriteLine("\nWhat would you like to buy?");
@@ -1136,7 +1139,7 @@ namespace RPGShop
             }
             else
             {
-                Console.WriteLine("[1] Equip Helm");
+                Console.WriteLine("[1] --Equip Helm--");
             }
 
             if (plyrStat.equipeChest != null)
@@ -1145,7 +1148,7 @@ namespace RPGShop
             }
             else
             {
-                Console.WriteLine("[2] Equip Chestpeice");
+                Console.WriteLine("[2] --Equip Chestpeice--");
             }
 
             if (plyrStat.equipeGaunt != null)
@@ -1154,7 +1157,7 @@ namespace RPGShop
             }
             else
             {
-                Console.WriteLine("[3] Equip Gauntlets");
+                Console.WriteLine("[3] --Equip Gauntlets--");
             }
 
             if (plyrStat.equipeLeg != null)
@@ -1163,7 +1166,7 @@ namespace RPGShop
             }
             else
             {
-                Console.WriteLine("[4] Equip Leggings");
+                Console.WriteLine("[4] --Equip Leggings--");
             }
 
             if (plyrStat.equipedWeapon != null)
@@ -1172,7 +1175,7 @@ namespace RPGShop
             }
             else
             {
-                Console.WriteLine("[5] Equip Weapon");
+                Console.WriteLine("[5] --Equip Weapon--");
             }
 
             Console.WriteLine("\nWhich would you like to change out?");
@@ -1256,7 +1259,7 @@ namespace RPGShop
                         if (player[i].item != null)
                         {
                             string[] item = player[i].item.Split(' ');
-                            if (item[2] == "Axe" || item[2] == "Sword" || item[2] == "Mace" || item[2] == "Pike")
+                            if (item[2] == "Axe" || item[2] == "Sword" || item[2] == "Morningstar" || item[2] == "Halberd")
                             {
                                 _items[place] = player[i].item;
                                 place++;
@@ -1372,10 +1375,6 @@ namespace RPGShop
         {
             Console.WriteLine("It looks like you have died, better luck next time!");
             file.reset();
-            file.readFilePlayer();
-            file.writeFilePlayer();
-            file.writePlayerStats();
-            file.writeFileSK();
             Console.ReadLine();
         }
         /// <summary>

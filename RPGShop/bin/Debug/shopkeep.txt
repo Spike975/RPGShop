@@ -1,1 +1,1 @@
-Rusty Bronze Helmet,105,Hardened Iron Chestpiece,170,Rusty Bronze Gauntlets,115,Hardened Bronze Leggings,160,Chipped Bronze Pike,75
+Crude Leather Helmet,75,Crude Leather Chestpeice,105,Crude Leather Gauntlets,85,Crude Leather Leggings,95,Chipped Wooden Sword,45

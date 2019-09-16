@@ -96,11 +96,11 @@ namespace RPGShop
                 return "Axe";
             }else if (wpn == 2)
             {
-                return "Pike";
+                return "Halberd";
             }
             else
             {
-                return "Mace";
+                return "Morningstar";
             }
         }
         /// <summary>
@@ -141,21 +141,21 @@ namespace RPGShop
             else if (_item[0] == "Rusted") { val -= 10; }
             else if (_item[0] == "Chipped") { val -= 5; }
             else if (_item[0] == "Balanced") { val += 10; }
-            else if (_item[0] == "Strong") { val += 15; }
-            else if (_item[0] == "Tempered") { val += 25; }
-            else if (_item[0] == "Masterworked") { val += 40; }
+            else if (_item[0] == "Strong") { val += 25; }
+            else if (_item[0] == "Tempered") { val += 40; }
+            else if (_item[0] == "Masterworked") { val += 75; }
 
             if (_item[1] == "Wooden") { val -= 5; }
-            else if (_item[1] == "Brass") { val += 5; }
-            else if (_item[1] == "Lead") { val += 10; }
-            else if (_item[1] == "Bronze") { val += 15; }
-            else if (_item[1] == "Iron") { val += 25; }
-            else if (_item[1] == "Steel") { val += 40; }
+            else if (_item[1] == "Brass") { val += 10; }
+            else if (_item[1] == "Lead") { val += 15; }
+            else if (_item[1] == "Bronze") { val += 20; }
+            else if (_item[1] == "Iron") { val += 35; }
+            else if (_item[1] == "Steel") { val += 60; }
 
-            if (_item[2] == "Sword") { val += 30; }
-            else if (_item[2] == "Axe") { val += 30; }
-            else if (_item[2] == "Pike") { val += 40; }
-            else if (_item[2] == "Hammer") { val += 50; }
+            if (_item[2] == "Sword") { val += 45; }
+            else if (_item[2] == "Axe") { val += 50; }
+            else if (_item[2] == "Halberd") { val += 65; }
+            else if (_item[2] == "Morningstar") { val += 70; }
             return val;
         }
         /// <summary>
@@ -167,13 +167,13 @@ namespace RPGShop
         {
             float val = 0;
             string[] _item = item.Split(' ');
-            if (_item[0] == "Cracked") { val -= 1f; }
+            if (_item[0] == "Cracked") { val -= .75f; }
             else if (_item[0] == "Rusted") { val -= .5f; }
             else if (_item[0] == "Chipped") { val -= .25f; }
-            else if (_item[0] == "Balanced") { val += .5f; }
-            else if (_item[0] == "Strong") { val += .75f; }
+            else if (_item[0] == "Balanced") { val += .25f; }
+            else if (_item[0] == "Strong") { val += .5f; }
             else if (_item[0] == "Tempered") { val += 1.25f; }
-            else if (_item[0] == "Masterworked") { val += 1.5f; }
+            else if (_item[0] == "Masterworked") { val += 1.75f; }
 
             if (_item[1] == "Wooden") { val -= .25f; }
             else if (_item[1] == "Brass") { val += .25f; }
@@ -182,10 +182,10 @@ namespace RPGShop
             else if (_item[1] == "Iron") { val += 1f; }
             else if (_item[1] == "Steel") { val += 1.5f; }
 
-            if (_item[2] == "Sword") { val += 1f; }
-            else if (_item[2] == "Axe") { val += 1f; }
-            else if (_item[2] == "Pike") { val += 1.25f; }
-            else if (_item[2] == "Mace") { val += 1.5f; }
+            if (_item[2] == "Sword") { val += 1.125f; }
+            else if (_item[2] == "Axe") { val += 1.25f; }
+            else if (_item[2] == "Halberd") { val += 1.75f; }
+            else if (_item[2] == "Morningstar") { val += 1.875f; }
             return val;
         }
     }

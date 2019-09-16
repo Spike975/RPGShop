@@ -1,1 +1,1 @@
-Crude Leather Helmet,50,Crude Leather Chestpiece,80,Crude Leather Gauntlets,60,Crude Leather Leggings,70,Chipped Wooden Axe,20,Masterworked Steel Pike,120,Sturdy Bronze Chestpiece,15
+Crude Leather Helmet,50,Crude Leather Chestpiece,80,Crude Leather Gauntlets,60,Crude Leather Leggings,70
